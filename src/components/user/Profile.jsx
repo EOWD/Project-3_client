@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { Link } from "react-router-dom";
-import VideoChatApp from "./Video"
+
 
 export default function Profile() {
   const { user, handleLogout } = useContext(UserContext);
