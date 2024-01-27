@@ -7,6 +7,7 @@ import Profile from "./components/user/Profile";
 import IsPrivate from "./components/controllers/Private";
 import Layout from "./components/layout/Layout";
 import Home from "./components/Home";
+import LoggedIn from "./components/controllers/LoggedIn";
 
 function App() {
   return (
@@ -23,9 +24,11 @@ function App() {
         <Route
           path="/login"
           element={
+            <LoggedIn>
             <Layout>
               <Login />
             </Layout>
+            </LoggedIn>
           }
         />
         <Route
@@ -39,7 +42,7 @@ function App() {
           }
         />
         <Route
-          path="/Home"
+          path="/"
           element={
             <Layout>
               <Home />

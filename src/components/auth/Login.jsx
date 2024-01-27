@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
 
-const API_URL = "http://localhost:5005";
+const API_URL = "http://localhost:5500";
 
 function Login() {
   const navigate = useNavigate();
   const { authenticateUser } = useContext(UserContext);
   const [email, setEmail] = useState("");
+  const [userId,setId]=useState('')
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -24,6 +25,7 @@ function Login() {
       .then(({ data }) => {
         console.log("response from login", data);
         localStorage.setItem("authToken", data.token);
+       
         return authenticateUser().then(() => {
           navigate("/profile");
         });

@@ -1,7 +1,10 @@
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { Link } from "react-router-dom";
-
+import FileUpload from "./Upload"
+import StartRecording from './record'
+import AudioRecorder from './autostop'
+import CreateAssistantForm from './BuddyCreate'
 
 export default function Profile() {
   const { user, handleLogout } = useContext(UserContext);
@@ -10,11 +13,15 @@ export default function Profile() {
     <div>
       <p>Welcome!</p>
       <h1>{user && user.username}'s Profile</h1>
-      <Link to="/createTodo">Create To-Do</Link>
-      
-      <button onClick={handleLogout}>Logout</button>
+   
+      <FileUpload/>
+     <StartRecording/>
+
+      <br/>
      
-      
+      <button onClick={handleLogout}>Logout</button>
+    
+      <CreateAssistantForm/>
     </div>
   );
 }
