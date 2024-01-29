@@ -49,7 +49,7 @@ function AudioRecorder() {
         console.log(audioBlob);
         try {
           const response = await axios.post(
-            "http://localhost:5500/drive/assistant",
+            "http://localhost:5500/call/assistant",
             formData
           );
           setSendStatus("Sent successfully");

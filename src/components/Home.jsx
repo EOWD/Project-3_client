@@ -1,5 +1,5 @@
 import React from 'react'
-import VoiceNavigator from './user/navigate'
+import VoiceNavigator from './frontEndVoiceCommand/VoiceNav'
 function Home() {
   return (
     <div>
