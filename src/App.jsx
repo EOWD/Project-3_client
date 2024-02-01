@@ -7,12 +7,17 @@ import Profile from "./components/user/Profile";
 import IsPrivate from "./components/controllers/Private";
 import Layout from "./components/layout/Layout";
 import Home from "./components/Home";
+
 import LoggedIn from "./components/controllers/LoggedIn";
+
+import Chat from "./components/chat/Chat";
+
 
 function App() {
   return (
     <div>
       <Routes>
+
         <Route
           path="/signup"
           element={
@@ -48,7 +53,7 @@ function App() {
               <Home />
             </Layout>
           }
-        />
+
         <Route path="*" element={<h2>404 Page Not Found</h2>} />
       </Routes>
     </div>

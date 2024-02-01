@@ -1,0 +1,73 @@
+.guestNav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 30px;
+}
+
+.guestNav {
+    margin: 20px 0;
+
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.guestNav-logo {
+    font-size: 20px;
+}
+
+.guestNav-loginButton {
+    padding: 10px 20px;
+    background-color: rgba(89, 89, 89, 0.444);
+    border-radius: 200px;
+    transition: all .3s;
+}
+
+/* NAV > a */
+
+nav a {
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: all .3s;
+    padding-bottom: 5px;
+}
+nav a:hover {
+    border-bottom: 2px solid var(--hover-gray);
+}
+
+
+/* ------------- LOGGED IN NAV ------------- */
+
+.loggedIn.header-container {
+    display: flex;
+}
+
+#main {
+    display: inline-flex;
+    flex-direction: column;
+    transition: all 0.3s;
+    margin: 0px 30px;
+    max-width: 85%;
+}
+
+#sidebar {
+    transition: all 0.3s;
+    width: 5%;
+    display: inline-flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+/* HAMBURGER ICON */
+
+#openNav {
+    background-color: #414141;
+    color: white;
+    border: 0;
+    padding: 10px 10px;
+    max-width: 50px;
+    font-size: 20px;
+    border-radius: 100px;
+    cursor: pointer;
+}

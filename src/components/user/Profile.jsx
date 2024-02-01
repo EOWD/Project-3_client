@@ -15,11 +15,13 @@ export default function Profile() {
     <div>
       <p>Welcome!</p>
       <h1>{user && user.username}'s Profile</h1>
+
    
       <FileUpload/>
      <Call/>
 
       <br/>
+
      
       <button onClick={handleLogout}>Logout</button>
     

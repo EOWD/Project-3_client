@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./login.css"
 
 const API_URL = "http://localhost:5500";
+
 
 function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState(0);
+  const [phoneNumber, setPhoneNumber] = useState();
   const [errorMessage, setErrorMessage] = useState(undefined);
 
   const navigate = useNavigate();
@@ -35,11 +37,19 @@ function Signup() {
   };
 
   return (
-    <div>
-      <h2>Signup</h2>
-
-      <form onSubmit={handleSignup}>
-        <label htmlFor="username">Username:</label>
+    <div className="login-container">
+  
+      <div className="login-leftContainer">
+        <div className="login-leftImage"></div>
+        <div className="blur"></div>
+      </div>
+      <div className="login-rightForm">
+      <h2>Create a Account</h2>
+      <div className="signupCta">
+          <p>Already have an account?</p>
+          <Link to={`/login`}>Log in</Link>
+      </div>
+      <form className="loginForm" onSubmit={handleSignup}>
         <input
           required
           id="username"
@@ -47,11 +57,8 @@ function Signup() {
           name="username"
           value={username}
           onChange={handleUsername}
+          placeholder="Username"
         />
-        <br></br>
-        <br></br>
-
-        <label htmlFor="email">Email:</label>
         <input
           required
           id="email"
@@ -59,11 +66,8 @@ function Signup() {
           name="email"
           value={email}
           onChange={handleEmail}
+          placeholder="E-Mail"
         />
-        <br></br>
-        <br></br>
-
-        <label htmlFor="password">Password:</label>
         <input
           required
           id="password"
@@ -71,11 +75,8 @@ function Signup() {
           name="password"
           value={password}
           onChange={handlePassword}
+          placeholder="Password"
         />
-        <br></br>
-        <br></br>
-
-        <label htmlFor="phoneNumber">Phone Number:</label>
         <input
           required
           id="phoneNumber"
@@ -83,17 +84,17 @@ function Signup() {
           name="phoneNumber"
           value={phoneNumber}
           onChange={handlePhoneNumber}
+          placeholder="Phone Number"
         />
-        <br></br>
-        <br></br>
-
-        <button type="submit">Create an Account</button>
+        <button className="loginButton" type="submit">
+            <span className="loginButton-text">Start Creating</span>
+            <span className="loginButton-arrow">🡢</span>
+          </button>
       </form>
 
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
-      <p>If you have already an account, click "Login Page"</p>
-      <Link to={"/login"}>Login Page</Link>
+      </div>
     </div>
   );
 }
