@@ -7,7 +7,7 @@ function Footer() {
     const {isLoggedIn,isLoading}=useContext(UserContext)
     return (
     <div>
-   { !isLoggedIn?(<> <Link to={'/home'}>Home</Link>
+   { !isLoggedIn?(<> <Link to={'/'}>Home</Link>
      <Link to={'/login'}>Login</Link>
      
      <Link to={'/signup'}>Signup</Link></>):(<> <Link to={'/home'}>Home</Link>

@@ -1,13 +1,19 @@
 
-import Header from './Header'
+import Header from './header/Header'
 import Footer from './Footer'
-function Layout({children,}) {
-    
+import './header/header.css';
+import { useContext } from 'react'
+import { UserContext } from '../../context/UserContext';
+
+function Layout({children}) {
+  const { isLoggedIn } = useContext(UserContext)
   return (
     <div>
-    <Header/>
-      {children}
-      <Footer />
+      <Header/>
+        <div id={isLoggedIn ? 'main' : ''}>
+          {children}
+        <Footer />
+        </div>
     </div>
   )
 }

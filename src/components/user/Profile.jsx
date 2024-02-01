@@ -10,7 +10,6 @@ export default function Profile() {
     <div>
       <p>Welcome!</p>
       <h1>{user && user.username}'s Profile</h1>
-      <Link to="/createTodo">Create To-Do</Link>
       
       <button onClick={handleLogout}>Logout</button>
      

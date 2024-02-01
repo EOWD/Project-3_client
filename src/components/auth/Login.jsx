@@ -1,9 +1,10 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
+import "./login.css"
 
-const API_URL = "http://localhost:5005";
+const API_URL = "http://localhost:5069";
 
 function Login() {
   const navigate = useNavigate();
@@ -34,37 +35,45 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="login-container">
   
-      <h2>login</h2>
+      <div className="login-leftContainer">
+        <div className="login-leftImage"></div>
+        <div className="blur"></div>
+      </div>
+      <div className="login-rightForm">
+        <h2>Sign in to<br></br> your Account</h2>
+        <div className="signupCta">
+          <p>You don't have an account yet?</p>
+          <Link to={`/signup`}>Sign up</Link>
+        </div>
+        <form className="loginForm" onSubmit={handleLogin}>
+          <input
+            required
+            id="email"
+            type="email"
+            name="email"
+            value={email}
+            onChange={handleEmail}
+            placeholder="E-Mail"
+          />
+          <input
+            required
+            id="password"
+            type="password"
+            name="password"
+            value={password}
+            onChange={handlePassword}
+            placeholder="Password"
+          />
+          <button className="loginButton" type="submit">
+            <span className="loginButton-text">Login</span>
+            <span className="loginButton-arrow">🡢</span>
+          </button>
+        </form>
 
-      <form onSubmit={handleLogin}>
-        <label htmlFor="email">Email:</label>
-        <input
-          required
-          id="email"
-          type="email"
-          name="email"
-          value={email}
-          onChange={handleEmail}
-        />
-        <br></br>
-        <br></br>
-
-        <label htmlFor="password">Password:</label>
-        <input
-          required
-          id="password"
-          type="password"
-          name="password"
-          value={password}
-          onChange={handlePassword}
-        />
-
-        <button type="submit">LOGIN</button>
-      </form>
-
-      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+      </div>
     </div>
   );
 }

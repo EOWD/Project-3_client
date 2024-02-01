@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -15,10 +16,11 @@ const UserContextWrapper = ({ children }) => {
 
   const authenticateUser = async () => {
     const jwtToken = getJwtToken();
+    
 
     if (jwtToken) {
       try {
-        const { data } = await axios("http://localhost:5005/auth/verify", {
+        const { data } = await axios("http://localhost:5069/auth/verify", {
           headers: {
             authorize: `Bearer ${jwtToken}`,
           },
@@ -27,6 +29,7 @@ const UserContextWrapper = ({ children }) => {
         setIsLoggedIn(true);
         setIsLoading(false);
         setUser(data);
+        navigate("/profile");
       } catch (error) {
         setIsLoggedIn(false);
         setIsLoading(false);
