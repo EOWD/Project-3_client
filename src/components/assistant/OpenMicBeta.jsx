@@ -1,18 +1,49 @@
-import { useState, useEffect , useContext} from "react";
-import {useNavigate} from 'react-router-dom'
-import axios from "axios";
-import annyang from "annyang";
-import { Route } from "react-router-dom";
-import {UserContext} from "../../context/UserContext";
-function AudioRecorder() {
-  const {user}=useContext(UserContext);
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import annyang from 'annyang';
+import { UserContext } from '../../context/UserContext';
 
-  const id =user.id
-  const REACT_APP_SERVER = 'http://localhost:5500'
-    const navigate= useNavigate()
+function AudioRecorder() {
+  const { user } = useContext(UserContext);
+  const id = user.id;
+  const REACT_APP_SERVER = 'http://localhost:5500';
+  const navigate = useNavigate();
   const [audioBlob, setAudioBlob] = useState(null);
   const [recording, setRecording] = useState(false);
   const [sendStatus, setSendStatus] = useState(null);
+  const [audioContext, setAudioContext] = useState(null);
+
+  useEffect(() => {
+    const initAudioContext = async () => {
+      try {
+        const context = new AudioContext();
+        await context.audioWorklet.addModule('../controllers/Silence.jsx'); // Adjust the path to your silence.jsx
+        setAudioContext(context);
+      } catch (error) {
+        console.error('Error loading audio worklet:', error);
+      }
+    };
+    initAudioContext();
+  }, []);
+
+  useEffect(() => {
+    if (annyang) {
+      const commands = {
+        "Pilot": startRecording,
+      };
+      annyang.addCommands(commands);
+      annyang.start();
+    } else {
+      console.error("Speech Recognition is not supported");
+    }
+
+    return () => {
+      if (annyang) {
+        annyang.abort();
+      }
+    };
+  }, []);
 
   const startRecording = async () => {
     try {
@@ -33,54 +64,30 @@ function AudioRecorder() {
       mediaRecorder.start();
       setRecording(true);
 
-      // Stop recording after 30 seconds
-      setTimeout(() => {
-        if (mediaRecorder.state !== "inactive") {
-          mediaRecorder.stop();
-          setRecording(false);
-        }
-      }, 10000);
+      if (audioContext) {
+        const silenceDetectorNode = new AudioWorkletNode(audioContext, 'silence-detector-processor');
+        silenceDetectorNode.port.onmessage = (event) => {
+          if (event.data === 'silent') {
+            mediaRecorder.stop();
+            setRecording(false);
+          }
+        };
+        const source = audioContext.createMediaStreamSource(stream);
+        source.connect(silenceDetectorNode).connect(audioContext.destination);
+      }
     } catch (error) {
       console.error("Error accessing microphone:", error);
     }
   };
 
   useEffect(() => {
-    if (annyang) {
-      // Define the commands
-      const commands = {
-        "v":startRecording,
-        "home" : () => navigate('/'),
-        "profile" : () => navigate('/profile'),
-      
-      }; 
-
-      // Add our commands to annyang
-      annyang.addCommands(commands);
-
-      // Start listening
-      annyang.start();
-    } else {
-      console.error("Speech Recognition is not supported");
-    }
-
-    // Cleanup function to abort annyang when the component unmounts
-    return () => {
-      if (annyang) {
-        annyang.abort();
-      }
-    };
-  }, []);
-
-  useEffect(() => {
     const sendAudio = async () => {
       if (audioBlob) {
         const formData = new FormData();
-        formData.append('id',id)
+        formData.append('id', id);
         formData.append("myFile", audioBlob, "recording.mp3");
         try {
           const response = await axios.post(
-           
             `${REACT_APP_SERVER}/drive/assistant`,
             formData,
             {
@@ -106,7 +113,7 @@ function AudioRecorder() {
       {recording ? (
         <p>Recording...</p>
       ) : (
-        <p>Not Recording. Say home to start.</p>
+        <p>Not Recording. Say "Pilot" to start.</p>
       )}
       {sendStatus && <p>{sendStatus}</p>}
     </div>

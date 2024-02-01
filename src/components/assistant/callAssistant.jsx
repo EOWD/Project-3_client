@@ -1,13 +1,18 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
+import ImageCard from '../drive/ImageCard.jsx'
 function AudioRecorder() {
   const [audioBlob, setAudioBlob] = useState(null);
+  const [imageName, setImageName] = useState(null);
   const [recording, setRecording] = useState(false);
   const [sendStatus, setSendStatus] = useState(null);
+  const [prompt,setPrompt] = useState(null);
   const { user } = useContext(UserContext);
   const [stream, setStream] = useState("stream");
-
+  //const[image,setImage]=useState(null);
+  const [imageUrl,setUrl] = useState(null);
+const server=import.meta.env.VITE_APP_SERVER
 
   const id = user.id;
   // Function to start recording
@@ -49,13 +54,18 @@ function AudioRecorder() {
         console.log(audioBlob);
         try {
           const response = await axios.post(
-            "http://localhost:5500/call/assistant",
+            `${server}call/assistant`,
             formData
           );
           setSendStatus("Sent successfully");
           console.log(response.data)
+         const image = response.data.image.imageData
+         setImageName(response.data.image.name)
+          setUrl(`data:image/png;base64,${image}`);
+          setPrompt(response.data.image.prompt)
+
           const inStream = response.data.Stream;
-          console.log(inStream);
+         // console.log(inStream);
           const audioUrl = `data:audio/mpeg;base64,${inStream}`;
           setStream(audioUrl);
          // console.log(response.data);
@@ -76,8 +86,14 @@ function AudioRecorder() {
   return (
     <div>
      <div>
+    
+     <ImageCard userId="123" imageName={imageName} prompt={prompt} imageUrl={imageUrl} />
+
+
+     {imageUrl &&  <img  src={imageUrl} alt="" width={'500px'} />}
       {stream && <audio src={stream} autoPlay  />}
       {sendStatus && <p>{sendStatus}</p>}
+      
     </div>
       <button onClick={startRecording} disabled={recording}>
         {recording ? "Recording..." : "Start Recording"}
