@@ -14,13 +14,16 @@ const UserContextWrapper = ({ children }) => {
     return localStorage.getItem("authToken");
   };
 
+
   const authenticateUser = async () => {
     const jwtToken = getJwtToken();
     
 
     if (jwtToken) {
       try {
-        const { data } = await axios("http://localhost:5069/auth/verify", {
+
+        const { data } = await axios("http://localhost:5500/auth/verify", {
+
           headers: {
             authorize: `Bearer ${jwtToken}`,
           },
@@ -29,7 +32,7 @@ const UserContextWrapper = ({ children }) => {
         setIsLoggedIn(true);
         setIsLoading(false);
         setUser(data);
-        navigate("/profile");
+
       } catch (error) {
         setIsLoggedIn(false);
         setIsLoading(false);
@@ -43,9 +46,12 @@ const UserContextWrapper = ({ children }) => {
       setUser(null);
       console.log("No JWT Token found");
     }
+  
   };
+  console.log(user)
 
-  const handleLogout = () => {
+
+const handleLogout = () => {
     //remove token from local storage
     localStorage.removeItem("authToken");
     setUser(null);
@@ -68,6 +74,7 @@ const UserContextWrapper = ({ children }) => {
         setUser,
         authenticateUser,
         handleLogout,
+       
       }}
     >
       {children}

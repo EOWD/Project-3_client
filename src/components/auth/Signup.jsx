@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./login.css"
 
-const API_URL = "http://localhost:5069";
+const API_URL = "http://localhost:5500";
+
 
 function Signup() {
   const [username, setUsername] = useState("");
@@ -30,6 +31,7 @@ function Signup() {
       })
 
       .catch((error) => {
+        console.log(error);
         setErrorMessage(error.response.data.errorMessage);
       });
   };
