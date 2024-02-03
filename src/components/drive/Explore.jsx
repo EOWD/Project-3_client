@@ -2,6 +2,8 @@ import { useEffect, useContext, useState } from 'react';
 import { UserContext } from "../../context/UserContext";
 import axios from "axios";
 import ImageCard from '../drive/ImageCard';
+import LoadingSpinner from "../layout/loadingSpinne/LoadingSpinner"
+import "./Explorer.css"
  
 function Explore() {
     const { user } = useContext(UserContext);
@@ -25,7 +27,8 @@ function Explore() {
     }, [user]); // Dependency array, re-fetch data when `user` changes
  
     return (
-        <div>
+        <div className='explorerContainer'>
+            {items.length === 0 && <LoadingSpinner />}
             {items.map((one) => (
                 <ImageCard 
                     userId={user.id} // Use user.id directly

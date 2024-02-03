@@ -1,0 +1,9 @@
+.explorerContainer {
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+
+.explorerContainer .generateImage-wrapper {
+    display: inline-flex;
+    max-width: 49%;
+}

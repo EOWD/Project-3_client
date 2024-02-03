@@ -48,13 +48,14 @@ nav:not(.toggled) a:hover {
 }
 
 #sidebar {
+    display: flex;
+    align-items: center;
+    flex: 0 1 auto;
+    background-color: rgb(14, 14, 14);
     transition: all 0.3s;
-    width: 5%;
-    display: inline-flex;
     flex-direction: column;
     padding: 20px;
-    flex-wrap: wrap;
-    align-content: center;
+    width: 70px;
 }
 
 /* HAMBURGER ICON */
