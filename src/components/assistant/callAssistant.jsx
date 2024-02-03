@@ -8,14 +8,17 @@ function AudioRecorder() {
   const [recording, setRecording] = useState(false);
   const [sendStatus, setSendStatus] = useState(null);
   const [prompt,setPrompt] = useState(null);
-  const { user } = useContext(UserContext);
-  const [stream, setStream] = useState("stream");
+const [stream, setStream] = useState("stream");
   //const[image,setImage]=useState(null);
-  const [imageUrl,setUrl] = useState(null);
+ const [imageUrl,setUrl] = useState(null);
 const server=import.meta.env.VITE_APP_SERVER
-
+const { user } = useContext(UserContext);
   const id = user.id;
   // Function to start recording
+
+
+
+
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -54,15 +57,21 @@ const server=import.meta.env.VITE_APP_SERVER
         console.log(audioBlob);
         try {
           const response = await axios.post(
-            `${server}call/assistant`,
+            `${server}/call/assistant`,
             formData
           );
           setSendStatus("Sent successfully");
           console.log(response.data)
-         const image = response.data.image.imageData
-         setImageName(response.data.image.name)
-          setUrl(`data:image/png;base64,${image}`);
-          setPrompt(response.data.image.prompt)
+          if( response.data.image){
+
+            const image = response.data.image.imageData
+            setUrl(`data:image/png;base64,${image}`);
+            setImageName(response.data.image.name)
+         
+            setPrompt(response.data.image.prompt)
+          }
+         
+       
 
           const inStream = response.data.Stream;
          // console.log(inStream);

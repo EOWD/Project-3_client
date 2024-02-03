@@ -52,7 +52,7 @@ function App() {
             <Layout>
               <Home />
             </Layout>
-          }
+          }/>
 
         <Route path="*" element={<h2>404 Page Not Found</h2>} />
       </Routes>

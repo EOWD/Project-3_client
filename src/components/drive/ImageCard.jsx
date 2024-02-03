@@ -28,7 +28,7 @@ const ImageCard = ({ userId, imageName, prompt, imageUrl }) => {
       <div><strong>User ID:</strong> {userId}</div>
       <div><strong>Name:</strong> {imageName}</div>
       <div><strong>Prompt:</strong> {prompt}</div>
-      <img src={imageUrl} alt={imageName} style={{ maxWidth: '100%', marginTop: '10px' }} />
+     {imageUrl && <img src={imageUrl} alt={imageName} style={{ maxWidth: '100%', marginTop: '10px' }} />}
       <div style={{ marginTop: '10px' }}>
         <button onClick={handleShare}>Share</button>
         <button onClick={handleDownload}>Download</button>
