@@ -3,10 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./login.css"
 
-const API_URL = "http://localhost:5069";
 
 
 function Signup() {
+
+const API_URL = import.meta.env.VITE_APP_SERVER;
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -1,16 +1,15 @@
-import React from 'react'
+import React from "react";
 import { useState, useEffect, useContext, useRef } from "react";
-import Explore from "./drive/Explore"
-
+import Explore from "./drive/Explore";
+import UserImages from "./drive/driveRenders/UserImages";
 function Drive() {
-
-
   return (
     <div>
       <h2>DRIVE</h2>
-      <Explore />
+
+      <UserImages />
     </div>
-  )
+  );
 }
 
-export default Drive
+export default Drive;

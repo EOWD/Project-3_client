@@ -5,7 +5,7 @@ import { UserContext } from "../../context/UserContext";
 import "./login.css"
 
 
-const API_URL = "http://localhost:5069";
+const API_URL = import.meta.env.VITE_APP_SERVER;
 
 
 function Login() {
