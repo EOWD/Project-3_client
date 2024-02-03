@@ -57,7 +57,7 @@ const CreateAssistantForm = () => {
         });
 
         try {
-            const response = await axios.post('http://localhost:5500/buddy/create', formData, {
+            const response = await axios.post('http://localhost:5069/buddy/create', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     // Axios will automatically set the Content-Type to 'multipart/form-data' with the correct boundary

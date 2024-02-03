@@ -7,7 +7,7 @@ import { UserContext } from '../../context/UserContext';
 function AudioRecorder() {
   const { user } = useContext(UserContext);
   const id = user.id;
-  const REACT_APP_SERVER = 'http://localhost:5500';
+  const REACT_APP_SERVER = 'http://localhost:5069';
   const navigate = useNavigate();
   const [audioBlob, setAudioBlob] = useState(null);
   const [recording, setRecording] = useState(false);

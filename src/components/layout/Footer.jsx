@@ -10,9 +10,7 @@ function Footer() {
    { !isLoggedIn?(<> <Link to={'/'}>Home</Link>
      <Link to={'/login'}>Login</Link>
      
-     <Link to={'/signup'}>Signup</Link></>):(<> <Link to={'/home'}>Home</Link>
-     
-     <Link to={'/profile'}>Profile</Link></>)}
+     <Link to={'/signup'}>Signup</Link></>): ''}
     </div>
   );
  
