@@ -1,0 +1,163 @@
+/* VOICE ASSISTANT BUTTON */
+
+.voiceAssistant-buttonWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: rgb(14, 14, 14);
+    padding: 20px 40px;
+    border-radius: 20px;
+}
+
+
+/* trash & countdown */
+
+.deleteRecording {
+    cursor: pointer;
+}
+.deleteRecording svg {
+    transition: all 0.3s;
+    stroke: gray;
+}
+.deleteRecording:hover svg {
+    transition: all 0.3s;
+    stroke: rgb(255, 255, 255);
+}
+
+.recordingCountdown {
+    color: gray;
+}
+
+.deleteRecording,
+.recordingCountdown {
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s;
+    opacity: 0;
+    pointer-events: none;
+    margin-top: -150px;
+}
+
+.recordingCountdown {
+    margin-top: -135px;
+    min-width: 30px;
+}
+
+.isRecording .deleteRecording,
+.isRecording .recordingCountdown {
+    transition: all 0.3s;
+    opacity: 1;
+    pointer-events: auto;
+}
+.isRecording .recordingCountdown {
+    animation: right-to-left 0.5s;
+}
+.isRecording .deleteRecording {
+    animation: left-to-right 0.5s;
+}
+
+@keyframes left-to-right {
+    0% {
+        transform: translateX(-20px) translateY(40px);
+    }
+    100% {
+        transform: translateX(0px) translateY(0px);
+    }
+}
+@keyframes right-to-left {
+    0% {
+        transform: translateX(20px) translateY(40px);
+    }
+    100% {
+        transform: translateX(0px) translateY(0px);
+    }
+}
+
+
+/* send recording button */
+.sendRecording {
+    padding: 11px 12px 9px;
+    border-radius: 30px;
+    cursor: pointer;
+}
+.sendRecording svg {
+    transition: all 0.3s;
+    stroke: gray;
+}
+.sendRecording:hover svg {
+    transition: all 0.3s;
+    stroke: rgb(255, 255, 255);
+}
+
+
+/* chatLog Button */
+.chatLog {
+    padding: 11px 12px 9px;
+    cursor: pointer;
+}
+
+.chatLog svg {
+    transition: all 0.3s;
+    stroke: gray;
+}
+.chatLog:hover svg {
+    transition: all 0.3s;
+    stroke: rgb(255, 255, 255);
+}
+
+
+/* acutal recording button */
+.voiceAssistant-button {
+    transition: all 0.3s;
+    position: relative;
+    z-index: 3;
+    cursor: pointer;
+    border: 0px;
+    background: linear-gradient(109.6deg, rgb(245, 239, 249) 30.1%, rgb(207, 211, 236) 100.2%);
+    padding: 11px 12px 9px;
+    border-radius: 100%;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+}
+.voiceAssistant-button:hover {
+    transition: all 0.3s;
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.7);
+}
+
+.voiceAssistant-button svg {
+    transition: all 0.2s;
+    stroke: rgb(30, 33, 48);
+}
+
+.voiceAssistant-button .recording {
+    transition: all 0.2s;
+    stroke: rgb(255, 0, 0);
+}
+
+.isRecording button.voiceAssistant-button {
+    animation: wave-outwards 1.5s infinite;
+}
+
+@keyframes wave-outwards {
+    0% {
+      box-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
+    }
+    100% {
+      box-shadow: 0 0 20px 20px rgba(255, 255, 255, 0);
+    }
+}
+
+
+
+/* GENERATE IMAGE PREVIEW */
+
+.generatedImage-component {
+    position: fixed;
+    bottom: 220px;
+    left: 50%;
+    transform: translate(-50%);
+    width: 70%;
+}

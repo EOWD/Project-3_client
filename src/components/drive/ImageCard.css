@@ -1,0 +1,40 @@
+.generateImage-data {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* image itself + bg */
+
+.generateImage-data .topImage {
+    position: relative;
+    z-index: 2;
+    border-radius: 15px;
+}
+
+.bluredImageBelow {
+    display: flex;
+    position: absolute;
+    top: 20px;
+    justify-content: center;
+    width: 100%;
+    filter: blur(150px);
+}
+
+/* content box below */
+
+.contentBelowImage {
+    position: relative;
+    z-index: 1;
+    background-color: rgb(14, 14, 14);
+    padding: 75px 50px 25px;
+    border-radius: 20px;
+    display: flex;
+    gap: 40px;
+    margin-top: -50px;
+}
+
+.imageNameAndShare h3 {
+    margin-top: 0;
+}

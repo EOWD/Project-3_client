@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
 import ImageCard from '../drive/ImageCard.jsx'
-import { Mic, Trash2 } from 'lucide-react';
+import { Mic, Trash2, SendHorizontal, GalleryVerticalEnd } from 'lucide-react';
 import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
 
 function AudioRecorder() {
@@ -64,7 +64,6 @@ const { user } = useContext(UserContext);
       };
 
       mediaRecorder.onstop = () => {
-        console.log("stopManually in the onstop:",stopManuallyRef.current)
         if (!stopManuallyRef.current) { // Check if the stop was not manual
           const audioBlob = new Blob(audioChunks);
           setAudioBlob(audioBlob);
@@ -78,7 +77,6 @@ const { user } = useContext(UserContext);
       setRecording(true);
 
       recordingTimeoutIdRef.current = setTimeout(() => {
-        console.log("Calling stop after 10sec SUCCESS")
         stopRecording();
       }, 10000);
     } catch (error) {
@@ -87,20 +85,21 @@ const { user } = useContext(UserContext);
   };
 
   const stopRecording = () => {
-    mediaRecorderRef.current.stop();
-    setRecording(false);
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach((track) => track.stop());
-    }
-    clearTimeout(recordingTimeoutIdRef.current);
-    clearTimeout(countdownTimerIdRef.current);
-    console.log("stopRecording() called")
+      if(mediaRecorderRef.current){
+        mediaRecorderRef.current.stop();
+        setRecording(false);
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach((track) => track.stop());
+        }
+        clearTimeout(recordingTimeoutIdRef.current);
+        clearTimeout(countdownTimerIdRef.current);
+      }
+    
   };
 
   const stopRecordingManually = () => {
     stopManuallyRef.current = true;
     stopRecording()
-    console.log("stopRecordingManually() MANUAL")
   }
 
   // useEffect to send the audio once recording is stopped
@@ -118,8 +117,7 @@ const { user } = useContext(UserContext);
           );
           setSendStatus("Sent successfully");
           console.log(response.data)
-          if( response.data.image){
-
+          if(response.data.image){
             const image = response.data.image.imageData
             setUrl(`data:image/png;base64,${image}`);
             setImageName(response.data.image.name)
@@ -143,7 +141,6 @@ const { user } = useContext(UserContext);
     };
 
     sendAudio();
-
     
   }, [audioBlob]);
 
@@ -151,17 +148,17 @@ const { user } = useContext(UserContext);
 
   return (
     <div>
-     <div>
-    
-     <ImageCard userId="123" imageName={imageName} prompt={prompt} imageUrl={imageUrl} />
-
-
-     {imageUrl &&  <img  src={imageUrl} alt="" width={'500px'} />}
-      {mediaRecorderRef.current && <audio src={mediaRecorderRef.current} autoPlay  />}
-      {sendStatus && <p>{sendStatus}</p>}
+     <div className="generatedImage-component">
+      {imageName && <ImageCard userId="123" imageName={imageName} prompt={prompt} imageUrl={imageUrl} />}
       
+      {/* {imageUrl &&  <img  src={imageUrl} alt="" width={'500px'} />}
+      {mediaRecorderRef.current && <audio src={mediaRecorderRef.current} autoPlay  />}
+      {sendStatus && <p>{sendStatus}</p>} */}
     </div>
       <div className={recording ? "voiceAssistant-buttonWrapper isRecording" : "voiceAssistant-buttonWrapper"}>
+        <div className="chatLog" onClick={stopRecording}>
+          <GalleryVerticalEnd size="25" />
+        </div>
         <p className="recordingCountdown">{count}s</p>
         <button className="voiceAssistant-button" onClick={startRecording} disabled={recording}>
           {recording ? <Mic size="32" className="recording" />:<Mic size="32" />}
@@ -169,9 +166,12 @@ const { user } = useContext(UserContext);
         <div className="deleteRecording" onClick={stopRecordingManually}>
           <Trash2 size="22" />
         </div>
+        <div className="sendRecording" onClick={stopRecording}>
+          <SendHorizontal size="25" />
+        </div>
       </div>
-      <VoiceVisualizer ref={audioRef} controls={recorderControls} />
-      {sendStatus && <p>{sendStatus}</p>}
+      {/* <VoiceVisualizer ref={audioRef} controls={recorderControls} />
+      {sendStatus && <p>{sendStatus}</p>} */}
     </div>
   );
 }

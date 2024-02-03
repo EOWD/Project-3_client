@@ -19,12 +19,17 @@ body {
     --hover-button-color: rgb(89, 89, 89, 0.6);
 }
 
+.container {
+    display: flex;
+    height: 100vh;
+}
+
 p {
     font-size: 18px;
 }
 
 /* BASICS */
-  
+
 em {
     font-family: "Sarabun";
     font-style: italic;

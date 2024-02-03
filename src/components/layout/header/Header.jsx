@@ -12,17 +12,17 @@ function Header() {
     const sidebar = document.getElementById("sidebar");
     const openNavButton = document.getElementById("openNav");
   
-    if(sidebar.style.width === "25%") {
+    if(sidebar.style.width === "10%") {
       sidebar.style.width = "5%";
-      document.getElementById("main").style.maxWidth = "85%";
+      document.getElementById("main").style.maxWidth = "95%";
       openNavButton.innerHTML = "&#9776;";
       openNavButton.style.padding = "10px 14px";
       sidebar.classList.add("toggled");
     } else {
-      sidebar.style.width = "25%";
-      document.getElementById("main").style.maxWidth = "65%";
+      sidebar.style.width = "10%";
+      document.getElementById("main").style.maxWidth = "90%";
       openNavButton.innerHTML = "X";
-      openNavButton.style.padding = "12px 10px";
+      openNavButton.style.padding = "12px 17px";
       sidebar.classList.remove("toggled");
     }
   }
