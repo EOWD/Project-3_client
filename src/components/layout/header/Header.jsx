@@ -1,27 +1,31 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { UserContext } from '../../../context/UserContext';
 import { useContext } from 'react'
+import { MessagesSquare, CircleUserRound, Home, LogOut, Folder, AudioLines } from 'lucide-react';
 
 function Header() {
-  const { isLoggedIn, isLoading } = useContext(UserContext)
+  const { isLoggedIn, isLoading, handleLogout } = useContext(UserContext);
+  const iconSize = 28;
   
   function toggleSidebar() {
-    var sidebar = document.getElementById("sidebar");
-    var openNavButton = document.getElementById("openNav");
+    const sidebar = document.getElementById("sidebar");
+    const openNavButton = document.getElementById("openNav");
   
     if(sidebar.style.width === "25%") {
       sidebar.style.width = "5%";
       document.getElementById("main").style.maxWidth = "85%";
       openNavButton.innerHTML = "&#9776;";
-      openNavButton.style.padding = "10px 10px";
+      openNavButton.style.padding = "10px 14px";
+      sidebar.classList.add("toggled");
     } else {
       sidebar.style.width = "25%";
       document.getElementById("main").style.maxWidth = "65%";
       openNavButton.innerHTML = "X";
       openNavButton.style.padding = "12px 10px";
+      sidebar.classList.remove("toggled");
     }
-  }  
+  }
 
   if(!isLoggedIn){ /* GUEST NAV */
     return(
@@ -40,14 +44,44 @@ function Header() {
   } else { /* LOGGED IN NAV */
     return(
       <>
-        <nav className='loggedIn header-container' id="sidebar"> 
+        <nav className='loggedIn header-container toggled' id="sidebar"> 
           <button id="openNav" onClick={toggleSidebar}>&#9776;</button>
           <br></br>
-          <Link to={'/'}>Home</Link>
+          <div className="sidebar-container">
+            <div>
+              <NavLink to={'/'} className="toggledIcon">
+                <Home size={iconSize} />
+              </NavLink>
+              <NavLink to={'/'}>Home</NavLink>
+            </div>
+            <br></br>
+            <div>
+              <NavLink to={'/profile'} className="toggledIcon">
+                <CircleUserRound size={iconSize} />
+              </NavLink>
+              <NavLink to={'/profile'}>Profile</NavLink>
+            </div>
+            <br></br>
+            <div>
+              <NavLink to={'/voice'} className="toggledIcon">
+                <AudioLines size={iconSize} />
+              </NavLink>
+              <NavLink to={'/voice'}>Chat</NavLink>
+            </div>
+          </div>
           <br></br>
-          <Link to={'/profile'}>Profile</Link>
+          <div>
+            <div>
+              <NavLink to={'/drive'} className="toggledIcon">
+                <Folder size={iconSize} />
+              </NavLink>
+              <NavLink to={'/drive'}>Drive</NavLink>
+            </div>
+          </div>
           <br></br>
-          <Link to={'/chat'}>Chat</Link>
+          <div className="logoutButton" onClick={handleLogout}>
+              <LogOut size={22} color="gray" />
+          </div>
         </nav>
       </>
     );

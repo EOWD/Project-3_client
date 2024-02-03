@@ -8,25 +8,21 @@ import CreateAssistantForm from '../assistant/createAssistant'
 import AudioRecorders from '../assistant/Test'
 
 export default function Profile() {
-  console.log(import.meta.env.VITE_APP_SERVER)
+  /* console.log(import.meta.env.VITE_APP_SERVER) */
   const { user, handleLogout } = useContext(UserContext);
-  console.log(user);
+  /* console.log(user); */
   return (
     <div>
       <p>Welcome!</p>
       <h1>{user && user.username}'s Profile</h1>
 
    
-      <FileUpload/>
-     <Call/>
+      {/* <FileUpload/> */}
+      {/* <Call/> */}
 
       <br/>
-
-     
-      <button onClick={handleLogout}>Logout</button>
     
       <CreateAssistantForm/>
-
     
     </div>
   );

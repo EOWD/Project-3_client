@@ -1,7 +1,10 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
 import ImageCard from '../drive/ImageCard.jsx'
+import { Mic, Trash2 } from 'lucide-react';
+import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
+
 function AudioRecorder() {
   const [audioBlob, setAudioBlob] = useState(null);
   const [imageName, setImageName] = useState(null);
@@ -9,17 +12,46 @@ function AudioRecorder() {
   const [sendStatus, setSendStatus] = useState(null);
   const [prompt,setPrompt] = useState(null);
   const { user } = useContext(UserContext);
-  const [stream, setStream] = useState("stream");
   //const[image,setImage]=useState(null);
   const [imageUrl,setUrl] = useState(null);
-const server=import.meta.env.VITE_APP_SERVER
-
+  const server=import.meta.env.VITE_APP_SERVER
   const id = user.id;
+
+  const streamRef = useRef(null);
+  const mediaRecorderRef = useRef(null);
+  
+  const [count, setCount] = useState(10);
+  const countdownTimerIdRef = useRef();
+  const recordingTimeoutIdRef = useRef();
+  const recorderControls = useVoiceVisualizer();
+  const { audioRef } = recorderControls;
+  const stopManuallyRef = useRef(false);
+
+  /* Countdown for besides the button */
+  const startCountdown = () => {
+    if (countdownTimerIdRef.current) clearInterval(countdownTimerIdRef.current);
+
+    setCount(10);
+
+    countdownTimerIdRef.current = setInterval(() => {
+      setCount((prevCount) => {
+        if (prevCount <= 1) {
+          clearInterval(countdownTimerIdRef.current);
+          return 0;
+        }
+        return prevCount - 1;
+      });
+    }, 1000);
+  };
+
   // Function to start recording
   const startRecording = async () => {
     try {
+      startCountdown()
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = stream;
       const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
       const audioChunks = [];
 
       mediaRecorder.ondataavailable = (event) => {
@@ -27,22 +59,44 @@ const server=import.meta.env.VITE_APP_SERVER
       };
 
       mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks);
-        setAudioBlob(audioBlob);
+        console.log("stopManually in the onstop:",stopManuallyRef.current)
+        if (!stopManuallyRef.current) { // Check if the stop was not manual
+          const audioBlob = new Blob(audioChunks);
+          setAudioBlob(audioBlob);
+        }
         stream.getTracks().forEach((track) => track.stop());
+        // Reset the manual stop flag for the next recording
+        stopManuallyRef.current = false;
       };
 
       mediaRecorder.start();
       setRecording(true);
 
-      setTimeout(() => {
-        mediaRecorder.stop();
-        setRecording(false);
-      }, 10000); // Stops recording after 3 seconds
+      recordingTimeoutIdRef.current = setTimeout(() => {
+        console.log("Calling stop after 10sec SUCCESS")
+        stopRecording();
+      }, 10000);
     } catch (error) {
       console.error("Error accessing microphone:", error);
     }
   };
+
+  const stopRecording = () => {
+    mediaRecorderRef.current.stop();
+    setRecording(false);
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+    }
+    clearTimeout(recordingTimeoutIdRef.current);
+    clearTimeout(countdownTimerIdRef.current);
+    console.log("stopRecording() called")
+  };
+
+  const stopRecordingManually = () => {
+    stopManuallyRef.current = true;
+    stopRecording()
+    console.log("stopRecordingManually() MANUAL")
+  }
 
   // useEffect to send the audio once recording is stopped
   useEffect(() => {
@@ -54,21 +108,23 @@ const server=import.meta.env.VITE_APP_SERVER
         console.log(audioBlob);
         try {
           const response = await axios.post(
-            `${server}call/assistant`,
+            `http://localhost:5069/call/assistant `,
             formData
           );
           setSendStatus("Sent successfully");
           console.log(response.data)
-         const image = response.data.image.imageData
-         setImageName(response.data.image.name)
-          setUrl(`data:image/png;base64,${image}`);
-          setPrompt(response.data.image.prompt)
-
+          if( response.data.image){
+            const image = response.data.image.imageData
+            setUrl(`data:image/png;base64,${image}`);
+            setImageName(response.data.image.name)
+            setPrompt(response.data.image.prompt)
+          }
           const inStream = response.data.Stream;
          // console.log(inStream);
           const audioUrl = `data:audio/mpeg;base64,${inStream}`;
-          setStream(audioUrl);
+          mediaRecorderRef.current = audioUrl;
          // console.log(response.data);
+         clearTimeout(recordingTimeoutIdRef.current);
         } catch (error) {
           setSendStatus("Error sending audio");
           console.error("Error uploading file:", error);
@@ -91,13 +147,20 @@ const server=import.meta.env.VITE_APP_SERVER
 
 
      {imageUrl &&  <img  src={imageUrl} alt="" width={'500px'} />}
-      {stream && <audio src={stream} autoPlay  />}
+      {mediaRecorderRef.current && <audio src={mediaRecorderRef.current} autoPlay  />}
       {sendStatus && <p>{sendStatus}</p>}
       
     </div>
-      <button onClick={startRecording} disabled={recording}>
-        {recording ? "Recording..." : "Start Recording"}
-      </button>
+      <div className={recording ? "voiceAssistant-buttonWrapper isRecording" : "voiceAssistant-buttonWrapper"}>
+        <p className="recordingCountdown">{count}s</p>
+        <button className="voiceAssistant-button" onClick={startRecording} disabled={recording}>
+          {recording ? <Mic size="32" className="recording" />:<Mic size="32" />}
+        </button>
+        <div className="deleteRecording" onClick={stopRecordingManually}>
+          <Trash2 size="22" />
+        </div>
+      </div>
+      <VoiceVisualizer ref={audioRef} controls={recorderControls} />
       {sendStatus && <p>{sendStatus}</p>}
     </div>
   );

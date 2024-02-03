@@ -22,7 +22,7 @@ const UserContextWrapper = ({ children }) => {
     if (jwtToken) {
       try {
 
-        const { data } = await axios("http://localhost:5500/auth/verify", {
+        const { data } = await axios("http://localhost:5069/auth/verify", {
 
           headers: {
             authorize: `Bearer ${jwtToken}`,
