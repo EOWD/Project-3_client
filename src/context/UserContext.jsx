@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 const UserContext = createContext();
 
 const UserContextWrapper = ({ children }) => {
+
+const API_URL = import.meta.env.VITE_APP_SERVER;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -22,7 +24,7 @@ const UserContextWrapper = ({ children }) => {
     if (jwtToken) {
       try {
 
-        const { data } = await axios("http://localhost:5500/auth/verify", {
+        const { data } = await axios(`${API_URL}/auth/verify`, {
 
           headers: {
             authorize: `Bearer ${jwtToken}`,

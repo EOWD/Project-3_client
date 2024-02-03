@@ -7,6 +7,8 @@ import Profile from "./components/user/Profile";
 import IsPrivate from "./components/controllers/Private";
 import Layout from "./components/layout/Layout";
 import Home from "./components/Home";
+import Voice from "./components/Voice";
+import Drive from "./components/Drive";
 
 import LoggedIn from "./components/controllers/LoggedIn";
 
@@ -44,6 +46,24 @@ function App() {
                 <Profile />
               </Layout>
             </IsPrivate>
+          }
+        />
+        <Route
+          path="/voice"
+          element={
+            <IsPrivate>
+              <Layout>
+                <Voice />
+              </Layout>
+            </IsPrivate>
+          }
+        />
+        <Route
+          path="/drive"
+          element={
+            <Layout>
+              <Drive />
+            </Layout>
           }
         />
         <Route

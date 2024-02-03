@@ -31,8 +31,12 @@ nav a {
     border-bottom: 2px solid transparent;
     transition: all .3s;
     padding-bottom: 5px;
+    color: gray;
 }
-nav a:hover {
+nav a.active {
+    color: white;
+}
+nav:not(.toggled) a:hover {
     border-bottom: 2px solid var(--hover-gray);
 }
 
@@ -43,20 +47,14 @@ nav a:hover {
     display: flex;
 }
 
-#main {
-    display: inline-flex;
-    flex-direction: column;
-    transition: all 0.3s;
-    margin: 0px 30px;
-    max-width: 85%;
-}
-
 #sidebar {
     transition: all 0.3s;
     width: 5%;
     display: inline-flex;
     flex-direction: column;
     padding: 20px;
+    flex-wrap: wrap;
+    align-content: center;
 }
 
 /* HAMBURGER ICON */
@@ -65,9 +63,61 @@ nav a:hover {
     background-color: #414141;
     color: white;
     border: 0;
-    padding: 10px 10px;
+    padding: 10px 14px;
     max-width: 50px;
     font-size: 20px;
     border-radius: 100px;
     cursor: pointer;
+}
+
+/* TOGGLED ICONS / LINKS */
+
+.toggled a {
+    display: none;
+}
+
+.toggled a.toggledIcon {
+    display: inline-block;
+}
+
+.toggled {
+    display: flex;
+    align-items: center;
+}
+
+/* SVGs settings */
+.header-container svg {
+    display: none;
+}
+.toggled div a svg {
+    transition: all 0.3s;
+    display: inline-block;
+    stroke: rgb(144, 144, 144);
+}
+.toggled div a:hover svg {
+    transition: all 0.3s;
+    stroke: rgb(255, 255, 255);
+}
+
+.toggledIcon.active svg {
+    stroke:rgb(255, 255, 255);
+}
+
+
+
+/* Logout Button */
+
+.logoutButton {
+    position: absolute;
+    bottom: 40px;
+    left: 50px;
+    cursor: pointer;
+}
+.logoutButton svg {
+    display: inline-block;
+    transition: all 0.3s;
+}
+.logoutButton:hover svg {
+    transition: all 0.3s;
+    stroke: white;
 }
