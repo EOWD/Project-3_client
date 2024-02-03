@@ -11,10 +11,11 @@ function AudioRecorder() {
   const [recording, setRecording] = useState(false);
   const [sendStatus, setSendStatus] = useState(null);
   const [prompt,setPrompt] = useState(null);
-  const { user } = useContext(UserContext);
+const [stream, setStream] = useState("stream");
   //const[image,setImage]=useState(null);
-  const [imageUrl,setUrl] = useState(null);
-  const server=import.meta.env.VITE_APP_SERVER
+ const [imageUrl,setUrl] = useState(null);
+const server=import.meta.env.VITE_APP_SERVER
+const { user } = useContext(UserContext);
   const id = user.id;
 
   const streamRef = useRef(null);
@@ -45,6 +46,10 @@ function AudioRecorder() {
   };
 
   // Function to start recording
+
+
+
+
   const startRecording = async () => {
     try {
       startCountdown()
@@ -107,7 +112,7 @@ function AudioRecorder() {
         console.log(audioBlob);
         try {
           const response = await axios.post(
-            `http://localhost:5069/call/assistant `,
+            `${server}/call/assistant`,
             formData
           );
           setSendStatus("Sent successfully");
@@ -116,8 +121,12 @@ function AudioRecorder() {
             const image = response.data.image.imageData
             setUrl(`data:image/png;base64,${image}`);
             setImageName(response.data.image.name)
+         
             setPrompt(response.data.image.prompt)
           }
+         
+       
+
           const inStream = response.data.Stream;
          // console.log(inStream);
           const audioUrl = `data:audio/mpeg;base64,${inStream}`;

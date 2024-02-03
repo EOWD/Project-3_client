@@ -6,6 +6,7 @@ import LoadingSpinner from "../layout/loadingSpinne/LoadingSpinner"
 import "./Explorer.css"
  
 function Explore() {
+    const server=import.meta.env.VITE_APP_SERVER
     const { user } = useContext(UserContext);
     const [items, setItems] = useState([]);
  
@@ -13,7 +14,7 @@ function Explore() {
         const fetchData = async () => { 
             try {
                 // Use user.id directly in your request
-                const images = await axios.post(`http://localhost:5069/drive/user/images`, { id: user.id });
+                const images = await axios.post(`${server}/drive/user/images`, { id: user.id });
                 setItems(images.data.data);
             } catch (error) {
                 console.log(error);

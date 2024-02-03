@@ -3,6 +3,8 @@ import {UserContext} from "../../context/UserContext";
 import axios from 'axios';
 
 const CreateAssistantForm = () => {
+const API_URL = import.meta.env.VITE_APP_SERVER;
+
     const {user}=useContext(UserContext);
 
     console.log(user)
@@ -57,7 +59,7 @@ const CreateAssistantForm = () => {
         });
 
         try {
-            const response = await axios.post('http://localhost:5069/buddy/create', formData, {
+            const response = await axios.post(`${API_URL}/buddy/create`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     // Axios will automatically set the Content-Type to 'multipart/form-data' with the correct boundary
