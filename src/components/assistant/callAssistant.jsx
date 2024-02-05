@@ -1,10 +1,14 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
+import { UserDataContext } from "../../context/UserDataContext.jsx";
 import ImageCard from "../drive/ImageCard.jsx";
 import { Mic, Trash2, SendHorizontal, GalleryVerticalEnd } from "lucide-react";
 import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
 import AudioVisualizer from "./audioVisualization/audioVisualizer.jsx";
+import LoadingSpinner from "../layout/loadingSpinne/LoadingSpinner.jsx"
+import ChatLog from "../assistant/ChatLog.jsx"
+
 function AudioRecorder() {
   const [audioBlob, setAudioBlob] = useState(null);
   const [imageName, setImageName] = useState(null);
@@ -17,6 +21,7 @@ function AudioRecorder() {
   //const[image,setImage]=useState(null);
   const [imageUrl, setUrl] = useState(null);
   const server = import.meta.env.VITE_APP_SERVER;
+  const { chatLog, images, calendars } = useContext(UserDataContext);
   const { user } = useContext(UserContext);
   const id = user.id;
 
@@ -151,10 +156,18 @@ function AudioRecorder() {
     }
   }, [audioUrl]);
 
+  function toggleChatLog() {
+    var chatLogWindow = document.getElementById('chatLog');
+
+    if (chatLogWindow.style.display === 'flex') {
+      chatLogWindow.style.display = 'none';
+    } else {
+      chatLogWindow.style.display = 'flex';
+    }
+  }
+
   return (
     <div>
- 
-
       <div className="generatedImage-component">
         {imageName && (
           <ImageCard
@@ -171,14 +184,11 @@ function AudioRecorder() {
       {mediaRecorderRef.current && <audio src={mediaRecorderRef.current} autoPlay  />}
       {sendStatus && <p>{sendStatus}</p>} */}
       </div>
-      <div
-        className={
-          recording
-            ? "voiceAssistant-buttonWrapper isRecording"
-            : "voiceAssistant-buttonWrapper"
-        }
-      >
-        <div className="chatLog" onClick={stopRecording}>
+
+      <ChatLog />
+
+      <div className={recording ? "voiceAssistant-buttonWrapper isRecording" : "voiceAssistant-buttonWrapper"}>
+        <div className="chatLogToggle" onClick={toggleChatLog}>
           <GalleryVerticalEnd size="25" />
         </div>
         <p className="recordingCountdown">{count}s</p>
