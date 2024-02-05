@@ -27,6 +27,9 @@ const UserDataContextWrapper = ({ children }) => {
           const imagesResponse = await axios.post(`${API_URL}/drive/user/images`, { id: user.id });
           setImages(imagesResponse.data.data);
           console.log("User data loaded");
+          const chat = await axios.post(`${API_URL}/drive/chatlog`, { id: user.id });
+          setLog(chat.data.data);
+          console.log("log",chat.data.data);
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
@@ -35,9 +38,9 @@ const UserDataContextWrapper = ({ children }) => {
       fetchEntriesAndImages();
     }
   }, [user]); 
-console.log(diaries)
+
   return (
-    <UserDataContext.Provider value={{ entries,notes,diaries,calendars, images }}>
+    <UserDataContext.Provider value={{ entries,notes,diaries,calendars, images,chatLog }}>
       {children}
     </UserDataContext.Provider>
   );
