@@ -1,26 +1,28 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
-import ImageCard from '../drive/ImageCard.jsx'
-import { Mic, Trash2, SendHorizontal, GalleryVerticalEnd } from 'lucide-react';
+import ImageCard from "../drive/ImageCard.jsx";
+import { Mic, Trash2, SendHorizontal, GalleryVerticalEnd } from "lucide-react";
 import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
-
+import AudioVisualizer from "./audioVisualization/audioVisualizer.jsx";
 function AudioRecorder() {
   const [audioBlob, setAudioBlob] = useState(null);
   const [imageName, setImageName] = useState(null);
   const [recording, setRecording] = useState(false);
   const [sendStatus, setSendStatus] = useState(null);
-  const [prompt,setPrompt] = useState(null);
-const [stream, setStream] = useState("stream");
+  const [audioUrl, setAudioUrl] = useState("");
+  const audioElementRef = useRef(null);
+  const [prompt, setPrompt] = useState(null);
+  const [stream, setStream] = useState("stream");
   //const[image,setImage]=useState(null);
- const [imageUrl,setUrl] = useState(null);
-const server=import.meta.env.VITE_APP_SERVER
-const { user } = useContext(UserContext);
+  const [imageUrl, setUrl] = useState(null);
+  const server = import.meta.env.VITE_APP_SERVER;
+  const { user } = useContext(UserContext);
   const id = user.id;
 
   const streamRef = useRef(null);
   const mediaRecorderRef = useRef(null);
-  
+
   const [count, setCount] = useState(10);
   const countdownTimerIdRef = useRef();
   const recordingTimeoutIdRef = useRef();
@@ -47,12 +49,9 @@ const { user } = useContext(UserContext);
 
   // Function to start recording
 
-
-
-
   const startRecording = async () => {
     try {
-      startCountdown()
+      startCountdown();
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
       const mediaRecorder = new MediaRecorder(stream);
@@ -64,7 +63,8 @@ const { user } = useContext(UserContext);
       };
 
       mediaRecorder.onstop = () => {
-        if (!stopManuallyRef.current) { // Check if the stop was not manual
+        if (!stopManuallyRef.current) {
+          // Check if the stop was not manual
           const audioBlob = new Blob(audioChunks);
           setAudioBlob(audioBlob);
         }
@@ -85,22 +85,21 @@ const { user } = useContext(UserContext);
   };
 
   const stopRecording = () => {
-      if(mediaRecorderRef.current){
-        mediaRecorderRef.current.stop();
-        setRecording(false);
-        if (streamRef.current) {
-          streamRef.current.getTracks().forEach((track) => track.stop());
-        }
-        clearTimeout(recordingTimeoutIdRef.current);
-        clearTimeout(countdownTimerIdRef.current);
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      setRecording(false);
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
       }
-    
+      clearTimeout(recordingTimeoutIdRef.current);
+      clearTimeout(countdownTimerIdRef.current);
+    }
   };
 
   const stopRecordingManually = () => {
     stopManuallyRef.current = true;
-    stopRecording()
-  }
+    stopRecording();
+  };
 
   // useEffect to send the audio once recording is stopped
   useEffect(() => {
@@ -116,23 +115,23 @@ const { user } = useContext(UserContext);
             formData
           );
           setSendStatus("Sent successfully");
-          console.log(response.data)
-          if(response.data.image){
-            const image = response.data.image.imageData
+          console.log(response.data);
+          if (response.data.image) {
+            const image = response.data.image.imageData;
             setUrl(`data:image/png;base64,${image}`);
-            setImageName(response.data.image.name)
-         
-            setPrompt(response.data.image.prompt)
+            setImageName(response.data.image.name);
+
+            setPrompt(response.data.image.prompt);
           }
-         
-       
 
           const inStream = response.data.Stream;
-         // console.log(inStream);
-          const audioUrl = `data:audio/mpeg;base64,${inStream}`;
+          setAudioUrl(`data:audio/mpeg;base64,${inStream}`);
+          // console.log(inStream);
+
+         
           mediaRecorderRef.current = audioUrl;
-         // console.log(response.data);
-         clearTimeout(recordingTimeoutIdRef.current);
+          // console.log(response.data);
+          clearTimeout(recordingTimeoutIdRef.current);
         } catch (error) {
           setSendStatus("Error sending audio");
           console.error("Error uploading file:", error);
@@ -141,27 +140,58 @@ const { user } = useContext(UserContext);
     };
 
     sendAudio();
-    
   }, [audioBlob]);
 
-
+  useEffect(() => {
+    if (audioUrl && audioElementRef.current) {
+      audioElementRef.current.src = audioUrl;
+      audioElementRef.current
+        .play()
+        .catch((error) => console.error("Playback was prevented:", error));
+    }
+  }, [audioUrl]);
 
   return (
     <div>
-     <div className="generatedImage-component">
-      {imageName && <ImageCard userId="123" imageName={imageName} prompt={prompt} imageUrl={imageUrl} />}
-      
-      {/* {imageUrl &&  <img  src={imageUrl} alt="" width={'500px'} />}
+ 
+
+      <div className="generatedImage-component">
+        {imageName && (
+          <ImageCard
+            userId="123"
+            imageName={imageName}
+            prompt={prompt}
+            imageUrl={imageUrl}
+          />
+        )}
+        <audio ref={audioElementRef} controls style={{ display: "none" }}>
+          Your browser does not support the audio element.
+        </audio>
+        {/* {imageUrl &&  <img  src={imageUrl} alt="" width={'500px'} />}
       {mediaRecorderRef.current && <audio src={mediaRecorderRef.current} autoPlay  />}
       {sendStatus && <p>{sendStatus}</p>} */}
-    </div>
-      <div className={recording ? "voiceAssistant-buttonWrapper isRecording" : "voiceAssistant-buttonWrapper"}>
+      </div>
+      <div
+        className={
+          recording
+            ? "voiceAssistant-buttonWrapper isRecording"
+            : "voiceAssistant-buttonWrapper"
+        }
+      >
         <div className="chatLog" onClick={stopRecording}>
           <GalleryVerticalEnd size="25" />
         </div>
         <p className="recordingCountdown">{count}s</p>
-        <button className="voiceAssistant-button" onClick={startRecording} disabled={recording}>
-          {recording ? <Mic size="32" className="recording" />:<Mic size="32" />}
+        <button
+          className="voiceAssistant-button"
+          onClick={startRecording}
+          disabled={recording}
+        >
+          {recording ? (
+            <Mic size="32" className="recording" />
+          ) : (
+            <Mic size="32" />
+          )}
         </button>
         <div className="deleteRecording" onClick={stopRecordingManually}>
           <Trash2 size="22" />

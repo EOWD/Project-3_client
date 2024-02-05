@@ -12,6 +12,7 @@ const UserDataContextWrapper = ({ children }) => {
   const [notes, setNotes] = useState([]);
   const [diaries, setDiaries] = useState([]);
   const [calendars, setCalendars] = useState([]);
+  const[chatLog,setLog]=useState([]);
 
   useEffect(() => {
     if (user && user.id) {
