@@ -95,16 +95,16 @@
 
 
 /* chatLog Button */
-.chatLog {
+.chatLogToggle {
     padding: 11px 12px 9px;
     cursor: pointer;
 }
 
-.chatLog svg {
+.chatLogToggle svg {
     transition: all 0.3s;
     stroke: gray;
 }
-.chatLog:hover svg {
+.chatLogToggle:hover svg {
     transition: all 0.3s;
     stroke: rgb(255, 255, 255);
 }
@@ -160,4 +160,61 @@
     left: 50%;
     transform: translate(-50%);
     width: 70%;
+}
+
+
+
+/* ACTUAL CHAT LOG */
+
+.chatLog {
+    display: none;
+    position: fixed;
+    flex-direction: column;
+    bottom: 160px;
+    left: 50%;
+    background-color: rgb(14, 14, 14);
+    padding: 10px 0px;
+    border-radius: 20px;
+    transform: translateX(-50%);
+    max-height: 75%;
+    overflow: auto;
+}
+
+.chatLog.loading {
+    width: 50%;
+    height: 50%;
+}
+
+.lds-roller {
+    transform: translateX(-50%);
+}
+
+.userMessage {
+    color: #d4d4d4;
+    text-align: right;
+    padding: 12px 50px;
+}
+
+.assistantMessage {
+    /* color: green; */
+    background-color: #e0e0e00c;
+    padding: 12px 50px;
+}
+.assistantMessage.linkedImage a {
+    color: rgb(128, 128, 255);
+}
+.assistantMessage.linkedImage {
+    padding-top: 17px;
+    padding-bottom: 0;
+}
+
+.chatRole {
+    display: inline-block;
+    margin-bottom: 8px;
+    margin-top: 0px;
+}
+
+.chatLog-messages {
+    font-size: 16px;
+    margin-top: 0;
 }
