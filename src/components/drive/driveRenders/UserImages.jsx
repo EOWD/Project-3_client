@@ -15,6 +15,7 @@ function UserImages() {
       {items.map((one) => (
         <ImageCard
           key={one.imageName}
+          id={one._id}
           imageName={one.imageName}
           prompt={one.prompt}
           imageUrl={`data:image/png;base64,${one.imageData}`}

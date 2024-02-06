@@ -24,6 +24,10 @@
     transition: all .3s;
 }
 
+hr {
+    border-color: gray;
+}
+
 /* NAV > a */
 
 nav a {
@@ -32,12 +36,15 @@ nav a {
     transition: all .3s;
     padding-bottom: 5px;
     color: gray;
+    display: flex;
+    gap: 15px;
+    align-items: center;
 }
 nav a.active {
     color: white;
 }
 nav:not(.toggled) a:hover {
-    border-bottom: 2px solid var(--hover-gray);
+    color: white;
 }
 
 
@@ -56,6 +63,7 @@ nav:not(.toggled) a:hover {
     flex-direction: column;
     padding: 20px;
     width: 70px;
+    height: 100%;
 }
 
 /* HAMBURGER ICON */
@@ -73,9 +81,7 @@ nav:not(.toggled) a:hover {
 
 /* TOGGLED ICONS / LINKS */
 
-.toggled a {
-    display: none;
-}
+
 
 .toggled a.toggledIcon {
     display: inline-block;
@@ -87,9 +93,8 @@ nav:not(.toggled) a:hover {
 }
 
 /* SVGs settings */
-.header-container svg {
-    display: none;
-}
+
+
 .toggled div a svg {
     transition: all 0.3s;
     display: inline-block;
@@ -104,6 +109,31 @@ nav:not(.toggled) a:hover {
     stroke:rgb(255, 255, 255);
 }
 
+/* SUB MENU */
+
+.subMenu {
+    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 20px 0 20px 20px;
+}
+
+.toggled .subMenu {
+    display: none;
+}
+
+
+/* toggledName */
+
+.toggledName {
+    display: inline-block;
+    font-weight: 700;
+}
+
+.toggled .toggledName {
+    display: none;
+}
 
 
 /* Logout Button */

@@ -1,7 +1,7 @@
 import React from 'react';
 import "./ImageCard.css"
 
-const ImageCard = ({ userId, imageName, prompt, imageUrl }) => {
+const ImageCard = ({ userId, imageName, prompt, imageUrl, id }) => {
 
   const handleShare = () => {
     if (navigator.share) {
@@ -27,17 +27,17 @@ const ImageCard = ({ userId, imageName, prompt, imageUrl }) => {
   return (
     <div className='generateImage-wrapper'>
       <div className='generateImage-data'>
-        <img className='topImage' src={imageUrl} alt={imageName} style={{ maxWidth: '65%', marginTop: '10px' }} />
-        <div className="bluredImageBelow">
-        <img src={imageUrl} alt={imageName} style={{ maxWidth: '65%', marginTop: '10px' }} />
-        </div>
         <div className='contentBelowImage' style={{ marginTop: '10px' }}>
           <div className="imageNameAndShare">
             <h3>{imageName}</h3>
             <button onClick={handleShare}>Share</button>
             <button onClick={handleDownload}>Download</button>
           </div>
-          <div className="imagePrompt">{prompt}</div>
+          {/* <div className="imagePrompt">{prompt}</div> */}
+        </div>
+        <img className='topImage' src={imageUrl} alt={imageName} style={{ marginTop: '10px' }} id={id} />
+        <div className="bluredImageBelow">
+        <img src={imageUrl} alt={imageName} style={{ maxWidth: '65%', marginTop: '10px' }} />
         </div>
       </div>
     </div>

@@ -8,7 +8,8 @@ import IsPrivate from "./components/controllers/Private";
 import Layout from "./components/layout/Layout";
 import Home from "./components/Home";
 import Voice from "./components/Voice";
-import Drive from "./components/Drive";
+import Drive from "./components/drive/Drive";
+import DriveImages from "./components/drive/Images/Images";
 
 import LoggedIn from "./components/controllers/LoggedIn";
 
@@ -71,6 +72,34 @@ function App() {
           element={
             <Layout>
               <Home />
+            </Layout>
+          }/>
+        <Route
+          path="/tools"
+          element={
+            <Layout>
+              <Home />
+            </Layout>
+          }/>
+        <Route
+          path="/drive/images"
+          element={
+            <Layout>
+              <DriveImages />
+            </Layout>
+          }/>
+        <Route
+          path="/drive/calendar"
+          element={
+            <Layout>
+              <DriveImages />
+            </Layout>
+          }/>
+        <Route
+          path="/drive/diary"
+          element={
+            <Layout>
+              <DriveImages />
             </Layout>
           }/>
 
