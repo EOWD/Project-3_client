@@ -5,9 +5,14 @@ import { UserDataContext } from "../../context/UserDataContext.jsx";
 import ImageCard from "../drive/ImageCard.jsx";
 import { Mic, Trash2, SendHorizontal, GalleryVerticalEnd } from "lucide-react";
 import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
+
+
+import Circle from './audioVisualization/audioVisualizer'
+
 import AudioVisualizer from "./audioVisualization/audioVisualizer.jsx";
 import LoadingSpinner from "../layout/loadingSpinne/LoadingSpinner.jsx"
 import ChatLog from "../assistant/ChatLog.jsx"
+
 
 function AudioRecorder() {
   const [audioBlob, setAudioBlob] = useState(null);
@@ -34,6 +39,53 @@ function AudioRecorder() {
   const recorderControls = useVoiceVisualizer();
   const { audioRef } = recorderControls;
   const stopManuallyRef = useRef(false);
+
+
+
+
+  const [idle, setIdle] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+
+
+  useEffect(() => {
+    const audioElement = audioElementRef.current;
+
+    // Define the event handler
+    const handleAudioEnd = () => {
+      console.log('Audio has ended playing');
+      toggleVoice('idle')
+      // Perform any additional logic you need when the audio ends
+    };
+
+    // Attach the event listener to the audio element
+    audioElement.addEventListener('ended', handleAudioEnd);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      audioElement.removeEventListener('ended', handleAudioEnd);
+    };
+  }, []);
+
+
+
+  const toggleVoice = (state) => {
+    setIdle(false);
+    setIsSpeaking(false);
+    setIsThinking(false);
+    setIsListening(false);
+
+    if (state === 'listening') {
+      setIsListening(true);
+    } else if (state === 'speaking') {
+      setIsSpeaking(true);
+    } else if (state === 'thinking') {
+      setIsThinking(true);
+    } else if(state === 'idle'){
+      setIdle(true)
+    }
+  };
 
   /* Countdown for besides the button */
   const startCountdown = () => {
@@ -120,6 +172,7 @@ function AudioRecorder() {
             formData
           );
           setSendStatus("Sent successfully");
+          toggleVoice('thinking')
           console.log(response.data);
           if (response.data.image) {
             const image = response.data.image.imageData;
@@ -154,6 +207,7 @@ function AudioRecorder() {
         .play()
         .catch((error) => console.error("Playback was prevented:", error));
     }
+    toggleVoice('speaking')
   }, [audioUrl]);
 
   function toggleChatLog() {
@@ -177,6 +231,16 @@ function AudioRecorder() {
 
   return (
     <div>
+
+ 
+ <Circle
+      idle={idle}
+      isSpeaking={isSpeaking}
+      isThinking={isThinking}
+      isListening={isListening}
+      onToggleState={toggleVoice}
+    />
+
       <div className="generatedImage-component">
         {imageName && (
           <ImageCard
@@ -203,7 +267,7 @@ function AudioRecorder() {
         <p className="recordingCountdown">{count}s</p>
         <button
           className="voiceAssistant-button"
-          onClick={startRecording}
+          onClick={()=>{startRecording();toggleVoice('listening')}}
           disabled={recording}
         >
           {recording ? (
@@ -215,7 +279,7 @@ function AudioRecorder() {
         <div className="deleteRecording" onClick={stopRecordingManually}>
           <Trash2 size="22" />
         </div>
-        <div className="sendRecording" onClick={stopRecording}>
+        <div className="sendRecording" onClick={()=>{stopRecording();toggleVoice('thinking')}}>
           <SendHorizontal size="25" />
         </div>
       </div>
