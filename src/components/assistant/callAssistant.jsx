@@ -158,13 +158,22 @@ function AudioRecorder() {
 
   function toggleChatLog() {
     var chatLogWindow = document.getElementById('chatLog');
-
+  
     if (chatLogWindow.style.display === 'flex') {
       chatLogWindow.style.display = 'none';
     } else {
       chatLogWindow.style.display = 'flex';
+      
+      // Ensure the changes are reflected in the DOM
+      setTimeout(() => {
+        var latestMessage = document.getElementById('latest');
+        if (latestMessage) {
+          latestMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+      }, 0); // A timeout of 0 ms is often enough to wait for the next repaint
     }
   }
+  
 
   return (
     <div>

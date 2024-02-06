@@ -216,5 +216,11 @@
 
 .chatLog-messages {
     font-size: 16px;
-    margin-top: 0;
+    margin: 10px 0;
+}
+
+.copyChatMessage {
+    margin-top: 8px;
+    stroke: gray;
+    font-size: 8px;
 }

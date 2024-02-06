@@ -19,7 +19,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.2",
     "react-voice-visualizer": "^1.8.1",
-    "simplex-noise": "^4.0.1"
+    "simplex-noise": "^4.0.1",
+    "swiper": "^11.0.6"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

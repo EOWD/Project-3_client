@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
+import { Link } from "react-router-dom";
 import { UserDataContext } from "../../context/UserDataContext";
-import LoadingSpinner from "../layout/loadingSpinne/LoadingSpinner.jsx"
+import LoadingSpinner from "../layout/loadingSpinne/LoadingSpinner.jsx";
 
 function ChatLog() {
-
     const { chatLog, images } = useContext(UserDataContext);
   
     const imageRefs = images.map(image => ({
-        _id: image._id, // Only include the _id and createdAt fields
+        _id: image._id,
         createdAt: image.createdAt,
         type: 'imageRef', // Marker to indicate this entry is an image reference
     }));
@@ -17,22 +17,29 @@ function ChatLog() {
     return (
         <>
             <div className={sortedCombinedArray.length ? "chatLog" : "chatLog loading"} id="chatLog">
-            {sortedCombinedArray.length ? sortedCombinedArray.map((item) => {
+            {sortedCombinedArray.length ? sortedCombinedArray.map((item, index) => {
+                const isLastMessage = index === sortedCombinedArray.length - 1; // Check if the current item is the last one
                 if (item.type === 'imageRef') {
-                // For image references, just display the _id
-                return <div className="assistantMessage linkedImage" key={item._id}><a href={`drive/#${item._id}`}>Generated Image</a></div>;
+                    return (
+                        <div className={`assistantMessage linkedImage ${isLastMessage ? 'latest' : ''}`} key={item._id} id={isLastMessage ? 'latest' : undefined}>
+                            <Link to={`/drive#${item._id}`}>Generated Image</Link>
+                        </div>
+                    );
                 } else {
-                // For chat messages, display as before
-                let roleClass = item.role === "user" ? "userMessage" : "assistantMessage";
-                return (
-                    <div key={item._id} className={roleClass}>
-                    <p className="chatLog-messages">
-                        <span className="chatRole">{item.role}: </span>
-                        <br></br>
-                        {item.message}
-                    </p>
-                    </div>
-                );
+                    let roleClass = item.role === "user" ? "userMessage" : "assistantMessage";
+                    return (
+                        <div key={item._id} className={`${roleClass} ${isLastMessage ? 'latest' : ''}`} id={isLastMessage ? 'latest' : undefined}>
+                            <p className="chatLog-messages">
+                                {/* <span className="chatRole">{item.role}: </span> */}
+                                {item.message.split('\n').map((line, index, array) => (
+                                    <React.Fragment key={index}>
+                                        {line}
+                                        {index < array.length - 1 && <br />}
+                                    </React.Fragment>
+                                ))}
+                            </p>
+                        </div>
+                    );
                 }
             }) : <LoadingSpinner className="loadingSpinner" />}
             </div>
