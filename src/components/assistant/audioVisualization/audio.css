@@ -1,17 +1,97 @@
+.circle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: black;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+}
 
-.canvasContainer {
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.circle {
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background-color: black;
+  position: relative;
+  margin-bottom: 20px;
+  transition: box-shadow 2s;
+}
+
+
+
+.speak {
+  animation: soundWaveAnimation 1s infinite;
+}
+
+@keyframes soundWaveAnimation {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7),
+                0 0 20px rgba(255, 255, 255, 0.7),
+                0 0 30px rgba(255, 255, 255, 0.7);
   }
-  
-  .artCanvas {
-    background: white;
-    border: 1px solid black;
-    border-radius: 50%;
+  50% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+                0 0 40px rgba(255, 255, 255, 0.8),
+                0 0 60px rgba(255, 255, 255, 0.8),
+                0 0 80px rgba(255, 255, 255, 0.8);
   }
-  
+}
+
+.think {
+  animation: pulseAnimation 2s infinite;
+}
+
+@keyframes pulseAnimation {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+  }
+}
+
+.thinking-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: white;
+}
+
+.text {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.listen {
+  animation: listenAnimation 2s infinite;
+}
+
+@keyframes listenAnimation {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+  }
+}
+button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
