@@ -12,6 +12,7 @@ import Drive from "./components/drive/Drive";
 import DriveImages from "./components/drive/Images/Images";
 import Calendar from "./components/drive/Calendar/Calendar";
 import Explore from "./components/drive/Explore";
+import Diary from "./components/drive/Diary/Diary";
 
 import Call from './components/assistant/callAssistant'
 import LoggedIn from "./components/controllers/LoggedIn";
@@ -118,7 +119,7 @@ function App() {
           element={
             <IsPrivate>
               <Layout>
-                <DriveImages />
+                <Diary />
                 <Call />
               </Layout>
             </IsPrivate>

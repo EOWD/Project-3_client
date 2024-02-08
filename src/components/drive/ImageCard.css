@@ -1,8 +1,14 @@
 .generateImage-data {
     position: relative;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 50px;
+    flex-direction: column;
+}
+
+.generateImage-wrapper {
+    max-width: calc(100% - 150px);
+    display: flex;
+    justify-content: center;
 }
 
 /* image itself + bg */
@@ -10,11 +16,11 @@
 .generateImage-data .topImage {
     position: relative;
     z-index: 2;
-    border-radius: 15px;
+    border-radius: 15px 15px 0 0;
 }
 
 .topImage {
-    max-width: 600px;
+    max-width: 550px;
 }
 
 .bluredImageBelow {
@@ -22,8 +28,12 @@
     position: absolute;
     top: 20px;
     justify-content: center;
-    max-width: 800px;
     filter: blur(150px);
+    max-width: 100%;
+}
+
+.bluredImageBelow img {
+    max-width: 100%;
 }
 
 /* content box below */
@@ -32,13 +42,46 @@
     position: relative;
     z-index: 1;
     background-color: rgb(14, 14, 14);
-    padding: 25px 50px 25px;
-    border-radius: 20px;
+    border-radius: 0 0 15px 15px;
     display: flex;
     gap: 40px;
-    margin-top: -50px;
+    max-width: 550px;
+    min-width: 100%;
 }
 
+.imageNameAndShare {
+    display: flex;
+    gap: 50px;
+    padding: 10px 20px;
+    justify-content: space-between;
+    width: 100%;
+}
 .imageNameAndShare h3 {
     margin-top: 0;
+}
+
+/* downloadAndShareButton */
+
+.shareDownloadButtons {
+    display: flex;
+}
+
+.shareDownloadButtons button {
+    background-color: transparent;
+    transition: all 0.3s;
+    color: gray;
+}
+
+.shareDownloadButtons button:hover {
+    color: white;
+    transition: all 0.3s;
+}
+
+/* close img */
+
+.closeImage {
+    position: absolute;
+    right: -40px;
+    top: -25px;
+    background-color: transparent;
 }
