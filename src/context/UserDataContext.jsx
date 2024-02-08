@@ -34,6 +34,7 @@ const UserDataContextWrapper = ({ children }) => {
           console.error("Error fetching user data:", error);
         }
       };
+      console.log("CALENDAR",calendars)
 
       fetchEntriesAndImages();
     }

@@ -50,7 +50,7 @@ const API_URL = import.meta.env.VITE_APP_SERVER;
     }
   
   };
-  console.log(user)
+  /* console.log(user) */
 
 
 const handleLogout = () => {

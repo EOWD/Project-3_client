@@ -62,7 +62,8 @@ nav:not(.toggled) a:hover {
     transition: all 0.3s;
     flex-direction: column;
     padding: 20px;
-    width: 70px;
+    width: 150px;
+    min-width: 150px;
     height: 100%;
 }
 

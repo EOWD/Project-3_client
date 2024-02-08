@@ -6,6 +6,7 @@ import { Link, NavLink } from "react-router-dom";
 
 function Images() {
     const { images } = useContext(UserDataContext);
+    console.log(images)
     const [selectedImage, setSelectedImage] = useState(null);
 
     // Function to view single image
@@ -13,7 +14,7 @@ function Images() {
         setSelectedImage(imageData);
     }
 
-    const handleShare = (imageName, imageUrl) => {
+    /* const handleShare = (imageName, imageUrl) => {
         if (navigator.share) {
           navigator.share({
             title: imageName,
@@ -24,6 +25,15 @@ function Images() {
           alert("Sharing is not supported in this browser.");
         }
     };
+
+    const handleDownload = (imageName, imageUrl) => {
+        const link = document.createElement('a');
+        link.href = imageUrl;
+        link.download = `${imageName}.png`; // or any other extension
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }; */
 
     return (
         <div className="outerContainer">

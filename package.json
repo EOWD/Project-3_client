@@ -19,6 +19,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.2",
     "react-voice-visualizer": "^1.8.1",
+    "rsuite": "^5.53.2",
     "simplex-noise": "^4.0.1",
     "swiper": "^11.0.6"
   },

@@ -33,7 +33,9 @@ const API_URL = import.meta.env.VITE_APP_SERVER;
 
       .catch((error) => {
         console.log(error);
-        setErrorMessage(error.response.data.errorMessage);
+        if(error.response.data.message){
+          setErrorMessage(error.response.data.message);
+        }
       });
   };
 
