@@ -1,25 +1,33 @@
-import React, { useContext } from 'react';
-import { Calendar as RSuiteCalendar, Whisper, Popover, Badge } from 'rsuite';
+import React, { useContext, useEffect } from "react";
+import { Calendar as RSuiteCalendar, Whisper, Popover, Badge } from "rsuite";
 import { UserDataContext } from "../../../context/UserDataContext";
-import "./Calendar.css"
+import "./Calendar.css";
 
 function CalendarComponent() {
-  const { calendars } = useContext(UserDataContext);
-
+  const { calendars, refreshData } = useContext(UserDataContext);
+  useEffect(() => {
+    refreshData();
+  }, []);
   function getTodoList(date) {
     const year = date.getFullYear();
     const month = date.getMonth() + 1; // JavaScript months are 0-indexed
     const day = date.getDate();
-    const dateString = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    const dateString = `${year}-${month.toString().padStart(2, "0")}-${day
+      .toString()
+      .padStart(2, "0")}`;
 
-    return calendars.filter(entry => {
-      // Extract the date part from the entry's date and compare it to the current date string
-      const entryDate = entry.date.split('T')[0];
-      return entryDate === dateString;
-    }).map(entry => {
-        
-      return { time: 'N/A', title: entry.entry };
-    });
+    return calendars
+      .filter((entry) => {
+        // Extract the date part from the entry's date and compare it to the current date string
+        const entryDate = entry.date.split("T")[0];
+        return entryDate === dateString;
+      })
+      .map((entry) => {
+        if (entry.time) {
+          return { time: entry.time, title: entry.entry };
+        }
+        return { time: "N/A", title: entry.entry };
+      });
   }
 
   function renderCell(date) {

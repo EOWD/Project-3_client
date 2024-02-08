@@ -26,18 +26,21 @@ function Login() {
     axios
       .post(`${API_URL}/auth/login`, requestBody)
       .then(({ data }) => {
-        console.log("response from login", data);
+        console.log("Assistant value:", data.Assistant); // Debugging
         localStorage.setItem("authToken", data.token);
-       
-        return authenticateUser().then(() => {
-          navigate("/profile");
-        });
-      })
-      .catch((error) => {
-        if(error.response.data.message){
-          setErrorMessage(error.response.data.message);
+      
+        if (data.Assistant === true) {
+          console.log("Navigating to /profile"); // Debugging
+          return authenticateUser().then(() => {
+            navigate("/profile");
+          });
+        } else if (data.Assistant === false) {
+          console.log("Navigating to /create-assistant"); // Debugging
+          return authenticateUser().then(() => {
+            navigate("/createassistant");
+          });
         }
-      });
+      })
   };
 
   return (

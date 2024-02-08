@@ -12,7 +12,11 @@ import Drive from "./components/drive/Drive";
 import DriveImages from "./components/drive/Images/Images";
 import Calendar from "./components/drive/Calendar/Calendar";
 import Explore from "./components/drive/Explore";
+
+import CreateAssistantForm from "./components/assistant/create-assistant/createAssistant";
+
 import Diary from "./components/drive/Diary/Diary";
+
 
 import Call from './components/assistant/callAssistant'
 import LoggedIn from "./components/controllers/LoggedIn";
@@ -42,12 +46,25 @@ function App() {
             </LoggedIn>
           }
         />
+             <Route
+          path="/createassistant"
+          element={
+            <IsPrivate>
+             
+                
+                <CreateAssistantForm />
+               
+              
+            </IsPrivate>
+          }
+        />
         <Route
           path="/profile"
           element={
             <IsPrivate>
               <Layout>
                 <Profile />
+                
                 <Call />
               </Layout>
             </IsPrivate>

@@ -1,14 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import { UserDataContext } from "../../../context/UserDataContext";
 import "./Images.css";
 import { Trash2, Minimize2, Share2, DownloadCloud } from 'lucide-react';
 import { Link, NavLink } from "react-router-dom";
 
 function Images() {
-    const { images } = useContext(UserDataContext);
+    const { images,refreshData } = useContext(UserDataContext);
     console.log(images)
     const [selectedImage, setSelectedImage] = useState(null);
-
+   // useEffect(()=>{refreshData()},[])
     // Function to view single image
     function viewSingleImage(imageData) {
         setSelectedImage(imageData);
