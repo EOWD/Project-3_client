@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext,useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { UserDataContext } from "../../context/UserDataContext";
 import LoadingSpinner from "../layout/loadingSpinne/LoadingSpinner.jsx";
 
 function ChatLog() {
-    const { chatLog, images } = useContext(UserDataContext);
-  
+    const { chatLog, images,refreshData } = useContext(UserDataContext);
+  //useEffect(()=>{refreshData()},[])
     const imageRefs = images.map(image => ({
         _id: image._id,
         createdAt: image.createdAt,

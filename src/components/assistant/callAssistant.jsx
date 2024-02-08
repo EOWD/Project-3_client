@@ -5,15 +5,13 @@ import { UserDataContext } from "../../context/UserDataContext.jsx";
 import ImageCard from "../drive/ImageCard.jsx";
 import { Mic, Trash2, SendHorizontal, GalleryVerticalEnd } from "lucide-react";
 import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
-
-import Circle from './audioVisualization/audioVisualizer'
+import Circle from "./audioVisualization/audioVisualizer";
 
 import AudioVisualizer from "./audioVisualization/audioVisualizer.jsx";
-import LoadingSpinner from "../layout/loadingSpinne/LoadingSpinner.jsx"
-import ChatLog from "../assistant/ChatLog.jsx"
-
+import LoadingSpinner from "../layout/loadingSpinne/LoadingSpinner.jsx";
+import ChatLog from "../assistant/ChatLog.jsx";
 
 function AudioRecorder() {
   const [audioBlob, setAudioBlob] = useState(null);
@@ -27,9 +25,10 @@ function AudioRecorder() {
   //const[image,setImage]=useState(null);
   const [imageUrl, setUrl] = useState(null);
   const server = import.meta.env.VITE_APP_SERVER;
-  const { chatLog, images, calendars } = useContext(UserDataContext);
+  const { chatLog, images, calendars, refreshData } =
+    useContext(UserDataContext);
   const { user } = useContext(UserContext);
-  let id = user.id
+  let id = user.id;
 
   const streamRef = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -41,34 +40,33 @@ function AudioRecorder() {
   const { audioRef } = recorderControls;
   const stopManuallyRef = useRef(false);
 
-
   const location = useLocation();
   const [idle, setIdle] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
   const [isListening, setIsListening] = useState(false);
 
-
+  useEffect(() => {
+    refreshData();
+  }, [isSpeaking]);
   useEffect(() => {
     const audioElement = audioElementRef.current;
 
     // Define the event handler
     const handleAudioEnd = () => {
-      console.log('Audio has ended playing');
-      toggleVoice('idle')
+      console.log("Audio has ended playing");
+      toggleVoice("idle");
       // Perform any additional logic you need when the audio ends
     };
 
     // Attach the event listener to the audio element
-    audioElement.addEventListener('ended', handleAudioEnd);
+    audioElement.addEventListener("ended", handleAudioEnd);
 
     // Clean up the event listener when the component unmounts
     return () => {
-      audioElement.removeEventListener('ended', handleAudioEnd);
+      audioElement.removeEventListener("ended", handleAudioEnd);
     };
   }, []);
-
-
 
   const toggleVoice = (state) => {
     setIdle(false);
@@ -76,14 +74,14 @@ function AudioRecorder() {
     setIsThinking(false);
     setIsListening(false);
 
-    if (state === 'listening') {
+    if (state === "listening") {
       setIsListening(true);
-    } else if (state === 'speaking') {
+    } else if (state === "speaking") {
       setIsSpeaking(true);
-    } else if (state === 'thinking') {
+    } else if (state === "thinking") {
       setIsThinking(true);
-    } else if (state === 'idle') {
-      setIdle(true)
+    } else if (state === "idle") {
+      setIdle(true);
     }
   };
 
@@ -172,7 +170,7 @@ function AudioRecorder() {
             formData
           );
           setSendStatus("Sent successfully");
-          toggleVoice('thinking')
+          toggleVoice("thinking");
           console.log(response.data);
           if (response.data.image) {
             const image = response.data.image.imageData;
@@ -185,7 +183,6 @@ function AudioRecorder() {
           const inStream = response.data.Stream;
           setAudioUrl(`data:audio/mpeg;base64,${inStream}`);
           // console.log(inStream);
-
 
           mediaRecorderRef.current = audioUrl;
           // console.log(response.data);
@@ -207,42 +204,40 @@ function AudioRecorder() {
         .play()
         .catch((error) => console.error("Playback was prevented:", error));
     }
-    toggleVoice('speaking')
+    toggleVoice("speaking");
   }, [audioUrl]);
 
   function toggleChatLog() {
-    var chatLogWindow = document.getElementById('chatLog');
+    var chatLogWindow = document.getElementById("chatLog");
 
-    if (chatLogWindow.style.display === 'flex') {
-      chatLogWindow.style.display = 'none';
+    if (chatLogWindow.style.display === "flex") {
+      chatLogWindow.style.display = "none";
     } else {
-      chatLogWindow.style.display = 'flex';
+      chatLogWindow.style.display = "flex";
 
       // Ensure the changes are reflected in the DOM
       setTimeout(() => {
-        var latestMessage = document.getElementById('latest');
+        var latestMessage = document.getElementById("latest");
         if (latestMessage) {
-          latestMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
+          latestMessage.scrollIntoView({ behavior: "smooth", block: "end" });
         }
       }, 0); // A timeout of 0 ms is often enough to wait for the next repaint
     }
   }
 
-  function closeGeneratedImagePopup() {
-
-  }
-
+  function closeGeneratedImagePopup() {}
 
   return (
     <div>
-
-      {location.pathname === '/' && <Circle
-        idle={idle}
-        isSpeaking={isSpeaking}
-        isThinking={isThinking}
-        isListening={isListening}
-        onToggleState={toggleVoice}
-      />}
+      {location.pathname === "/" && (
+        <Circle
+          idle={idle}
+          isSpeaking={isSpeaking}
+          isThinking={isThinking}
+          isListening={isListening}
+          onToggleState={toggleVoice}
+        />
+      )}
 
       <div className="generatedImage-component hidden">
         <p className="closePopup">Close</p>
@@ -260,19 +255,27 @@ function AudioRecorder() {
         {/* {imageUrl &&  <img  src={imageUrl} alt="" width={'500px'} />}
       {mediaRecorderRef.current && <audio src={mediaRecorderRef.current} autoPlay  />}
       {sendStatus && <p>{sendStatus}</p>} */}
-
       </div>
 
       <ChatLog />
 
-      <div className={recording ? "voiceAssistant-buttonWrapper isRecording" : "voiceAssistant-buttonWrapper"}>
+      <div
+        className={
+          recording
+            ? "voiceAssistant-buttonWrapper isRecording"
+            : "voiceAssistant-buttonWrapper"
+        }
+      >
         <div className="chatLogToggle" onClick={toggleChatLog}>
           <GalleryVerticalEnd size="25" />
         </div>
         <p className="recordingCountdown">{count}s</p>
         <button
           className="voiceAssistant-button"
-          onClick={() => { startRecording(); toggleVoice('listening') }}
+          onClick={() => {
+            startRecording();
+            toggleVoice("listening");
+          }}
           disabled={recording}
         >
           {recording ? (
@@ -284,7 +287,13 @@ function AudioRecorder() {
         <div className="deleteRecording" onClick={stopRecordingManually}>
           <Trash2 size="22" />
         </div>
-        <div className="sendRecording" onClick={() => { stopRecording(); toggleVoice('thinking') }}>
+        <div
+          className="sendRecording"
+          onClick={() => {
+            stopRecording();
+            toggleVoice("thinking");
+          }}
+        >
           <SendHorizontal size="25" />
         </div>
       </div>

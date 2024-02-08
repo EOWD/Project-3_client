@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import Call from "../assistant/callAssistant";
 import AudioRecorder from "../assistant/OpenMicBeta";
-import CreateAssistantForm from "../assistant/createAssistant";
+import CreateAssistantForm from "../assistant/create-assistant/createAssistant";
 import AudioRecorders from "../assistant/Test";
 import FileUpload from "../drive/DriveFileUpload";
 export default function Profile() {
@@ -21,8 +21,7 @@ export default function Profile() {
       {/* <Call/> */}
 
       <br/>
-    
-      <CreateAssistantForm/>
+  
     
     </div>
   );
