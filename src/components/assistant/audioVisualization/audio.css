@@ -4,10 +4,23 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: black;
   color: white;
   font-family: 'Arial', sans-serif;
   text-align: center;
+}
+.circle-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: url('https://i.ibb.co/fnr1RDy/Herunterladen.png');
+  background-repeat: no-repeat;
+  background-position: calc(50% + 80px);
+  background-size: 60%;
+  filter: blur(150px);
 }
 
 .circle {

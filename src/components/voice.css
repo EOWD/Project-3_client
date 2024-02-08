@@ -7,11 +7,80 @@
     position: fixed;
     bottom: 50px;
     left: 50%;
-    transform: translate(-50%);
+    transform: translate(-15%);
     background-color: rgb(14, 14, 14);
     padding: 20px 40px;
     border-radius: 20px;
     z-index: 11;
+    gap: 20px;
+    box-shadow: 0 0 20px #0000009e;
+    transition: all 0.3s;
+    --offset: 3px;
+    overflow: hidden;
+}
+
+.voiceAssistant-buttonWrapper.isRecording {
+    box-shadow: 0 -40px 80px #000;
+    transition: all 0.3s;
+}
+
+.voiceAssistant-buttonWrapper.isSpeaking {
+    box-shadow: 80px 0px 60px #000;
+    transition: all 0.3s;
+}
+
+/* border animation */
+.voiceAssistant-buttonWrapper.isThinking::before, 
+.voiceAssistant-buttonWrapper.isThinking::after { 
+    display: block;
+}
+
+.voiceAssistant-buttonWrapper::before { 
+    display: none;
+    content: '';
+    background: conic-gradient(transparent 270deg, white, transparent);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    aspect-ratio: 1;
+    width: 100%;
+    animation: rotate 2s linear infinite;
+}
+
+.voiceAssistant-buttonWrapper::after {
+    display: none;
+    content: '';
+    background: inherit;
+    border-radius: inherit;
+    position: absolute;
+    inset: var(--offset);
+    height: calc(100% - 2 * var(--offset));
+    width: calc(100% - 2 * var(--offset));
+}
+
+@keyframes rotate {
+    from {
+        transform: translate(-50%, -50%) scale(1.4) rotate(0turn);
+    }
+
+    to {
+        transform: translate(-50%, -50%) scale(1.4) rotate(1turn);
+    }
+}
+
+
+/* sendStatus - error */
+
+.sendStatus-error {
+    position: absolute;
+    top: -150px;
+    left: -60px;
+    width: 300px;
+    background-color: gray;
+    padding: 10px;
+    text-align: center;
+    border-radius: 15px;
 }
 
 
@@ -19,6 +88,7 @@
 
 .deleteRecording {
     cursor: pointer;
+    right: 25%;
 }
 .deleteRecording svg {
     transition: all 0.3s;
@@ -29,23 +99,24 @@
     stroke: rgb(255, 255, 255);
 }
 
-.recordingCountdown {
-    color: gray;
-}
-
 .deleteRecording,
 .recordingCountdown {
-    position: relative;
-    z-index: 2;
+    position: absolute;
+    z-index: 12;
     transition: all 0.3s;
     opacity: 0;
     pointer-events: none;
-    margin-top: -150px;
+    margin-top: -93px;
+    left: 130px;
 }
 
 .recordingCountdown {
-    margin-top: -135px;
+    color: gray;
+    margin-top: -95px;
     min-width: 30px;
+    pointer-events: none;
+    user-select: none;
+    left: 30px;
 }
 
 .isRecording .deleteRecording,
@@ -80,10 +151,20 @@
 
 
 /* send recording button */
+
+.sendRecording.disabled {
+    pointer-events: none;
+}
+.sendRecording.disabled svg {
+    stroke: rgb(59, 59, 59);
+}
+
 .sendRecording {
     padding: 11px 12px 9px;
     border-radius: 30px;
     cursor: pointer;
+    position: relative;
+    z-index: 5;
 }
 .sendRecording svg {
     transition: all 0.3s;
@@ -99,6 +180,8 @@
 .chatLogToggle {
     padding: 11px 12px 9px;
     cursor: pointer;
+    position: relative;
+    z-index: 2;
 }
 
 .chatLogToggle svg {
@@ -185,7 +268,7 @@
     background-color: rgb(14, 14, 14);
     padding: 10px 0px;
     border-radius: 20px;
-    transform: translateX(-50%);
+    transform: translateX(-40%);
     max-height: 75%;
     overflow: auto;
     z-index: 10;
@@ -235,4 +318,51 @@
     margin-top: 8px;
     stroke: gray;
     font-size: 8px;
+}
+
+
+/* secondsDeleteStop-buttonsContainer */
+
+.secondsDeleteStop-buttonsContainer {
+    position: absolute;
+    bottom: 105px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 14;
+}
+
+
+/* Stop audio play button */
+
+.stopAudioPlay {
+    transition: all 0.3s;
+    display: none;
+    position: absolute;
+    left: 225px;
+    margin-left: 15px;
+    background-color: transparent;
+    margin-top: -15px;
+}
+
+.stopAudioPlay.isSpeaking {
+    transition: all 0.3s;
+    display: inline-flex;
+    animation: stop_left-to-right 0.5s;
+}
+.stopAudioPlay.isSpeaking svg {
+    stroke: gray;
+    transition: all 0.3s;
+}
+.stopAudioPlay.isSpeaking:hover svg {
+    stroke: white;
+    transition: all 0.3s;
+}
+
+@keyframes stop_left-to-right {
+    0% {
+        transform: translateX(-20px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
 }

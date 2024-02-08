@@ -39,6 +39,9 @@
 .viewSingleImage-container {
     position: relative;
     display: inline-flex;
+    width: 0%;
+}
+.viewSingleImage-container.selected {
     width: 50%;
 }
 
