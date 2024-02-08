@@ -1,7 +1,8 @@
 import React from 'react';
 import "./ImageCard.css"
+import { Download, Share2, X } from 'lucide-react';
 
-const ImageCard = ({ userId, imageName, prompt, imageUrl, id }) => {
+const ImageCard = ({ userId, imageName, prompt, imageUrl, id, imageVisible, setImageVisible }) => {
 
   const handleShare = () => {
     if (navigator.share) {
@@ -27,18 +28,20 @@ const ImageCard = ({ userId, imageName, prompt, imageUrl, id }) => {
   return (
     <div className='generateImage-wrapper'>
       <div className='generateImage-data'>
-        <div className='contentBelowImage' style={{ marginTop: '10px' }}>
-          <div className="imageNameAndShare">
-            <h3>{imageName}</h3>
-            <button onClick={handleShare}>Share</button>
-            <button onClick={handleDownload}>Download</button>
-          </div>
-          {/* <div className="imagePrompt">{prompt}</div> */}
-        </div>
         <img className='topImage' src={imageUrl} alt={imageName} style={{ marginTop: '10px' }} id={id} />
         <div className="bluredImageBelow">
-        <img src={imageUrl} alt={imageName} style={{ maxWidth: '65%', marginTop: '10px' }} />
+          <img src={imageUrl} alt={imageName}/>
         </div>
+        <div className='contentBelowImage'>
+          <div className="imageNameAndShare">
+            <p>{imageName}</p>
+            <div className="shareDownloadButtons">
+              <button onClick={handleShare}><Share2 /></button>
+              <button onClick={handleDownload}><Download /></button>
+            </div>
+          </div>
+        </div>
+        <button className="closeImage" onClick={() => {setImageVisible(false)}}><X /></button>
       </div>
     </div>
   );

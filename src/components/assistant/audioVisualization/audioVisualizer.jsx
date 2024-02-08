@@ -8,7 +8,7 @@ const Circle = ({ isSpeaking, isThinking, isListening,idle }) => {
       <div className={`circle ${idle ? 'idle' : ''} ${isSpeaking ? 'speak' : ''} ${isThinking ? 'think' : ''} ${isListening ? 'listen' : ''}`}>
         {isThinking && <span className="thinking-text">...</span>}
       </div>
-      <p className="text">The only way out is through</p>
+      {/* <p className="text">The only way out is through</p> */}
 
     </div>
   );
