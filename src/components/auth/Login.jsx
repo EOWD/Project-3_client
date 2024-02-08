@@ -34,7 +34,9 @@ function Login() {
         });
       })
       .catch((error) => {
-        setErrorMessage(error.response.data.errorMessage);
+        if(error.response.data.message){
+          setErrorMessage(error.response.data.message);
+        }
       });
   };
 

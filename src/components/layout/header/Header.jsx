@@ -8,7 +8,7 @@ function Header() {
   const { isLoggedIn, isLoading, handleLogout } = useContext(UserContext);
   const iconSize = 28;
 
-  function toggleSidebar() {
+  /* function toggleSidebar() {
     const sidebar = document.getElementById("sidebar");
     const openNavButton = document.getElementById("openNav");
 
@@ -25,7 +25,7 @@ function Header() {
       openNavButton.style.padding = "12px 17px";
       sidebar.classList.remove("toggled");
     }
-  }
+  } */
 
   if (!isLoggedIn) { /* GUEST NAV */
     return (
@@ -44,8 +44,8 @@ function Header() {
   } else { /* LOGGED IN NAV */
     return (
       <>
-        <nav className='loggedIn header-container toggled' id="sidebar">
-          <button id="openNav" onClick={toggleSidebar}>&#9776;</button>
+        <nav className='loggedIn header-container' id="sidebar">
+          {/* <button id="openNav">&#9776;</button> */}
           <br></br>
           <div className="sidebar-container">
             <div>
@@ -89,7 +89,7 @@ function Header() {
               <LogOut size={22} color="gray" />
             </div>
             <div>
-              <NavLink to={'/voice'} className="toggledIcon">
+              <NavLink to={'/explore'} className="toggledIcon">
                 <Globe size={iconSize} /> <span className="toggledName">Explore</span>
               </NavLink>
             </div>

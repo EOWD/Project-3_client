@@ -5,6 +5,7 @@ import { UserDataContext } from "../../context/UserDataContext.jsx";
 import ImageCard from "../drive/ImageCard.jsx";
 import { Mic, Trash2, SendHorizontal, GalleryVerticalEnd } from "lucide-react";
 import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
+import { useLocation } from 'react-router-dom';
 
 
 import Circle from './audioVisualization/audioVisualizer'
@@ -28,7 +29,7 @@ function AudioRecorder() {
   const server = import.meta.env.VITE_APP_SERVER;
   const { chatLog, images, calendars } = useContext(UserDataContext);
   const { user } = useContext(UserContext);
-  const id = user.id;
+  let id = user.id
 
   const streamRef = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -41,8 +42,7 @@ function AudioRecorder() {
   const stopManuallyRef = useRef(false);
 
 
-
-
+  const location = useLocation();
   const [idle, setIdle] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
@@ -82,7 +82,7 @@ function AudioRecorder() {
       setIsSpeaking(true);
     } else if (state === 'thinking') {
       setIsThinking(true);
-    } else if(state === 'idle'){
+    } else if (state === 'idle') {
       setIdle(true)
     }
   };
@@ -135,7 +135,7 @@ function AudioRecorder() {
 
       recordingTimeoutIdRef.current = setTimeout(() => {
         stopRecording();
-      }, 10000);
+      }, 300000);
     } catch (error) {
       console.error("Error accessing microphone:", error);
     }
@@ -186,7 +186,7 @@ function AudioRecorder() {
           setAudioUrl(`data:audio/mpeg;base64,${inStream}`);
           // console.log(inStream);
 
-         
+
           mediaRecorderRef.current = audioUrl;
           // console.log(response.data);
           clearTimeout(recordingTimeoutIdRef.current);
@@ -212,12 +212,12 @@ function AudioRecorder() {
 
   function toggleChatLog() {
     var chatLogWindow = document.getElementById('chatLog');
-  
+
     if (chatLogWindow.style.display === 'flex') {
       chatLogWindow.style.display = 'none';
     } else {
       chatLogWindow.style.display = 'flex';
-      
+
       // Ensure the changes are reflected in the DOM
       setTimeout(() => {
         var latestMessage = document.getElementById('latest');
@@ -227,21 +227,25 @@ function AudioRecorder() {
       }, 0); // A timeout of 0 ms is often enough to wait for the next repaint
     }
   }
-  
+
+  function closeGeneratedImagePopup() {
+
+  }
+
 
   return (
     <div>
 
- 
- <Circle
-      idle={idle}
-      isSpeaking={isSpeaking}
-      isThinking={isThinking}
-      isListening={isListening}
-      onToggleState={toggleVoice}
-    />
+      {location.pathname === '/' && <Circle
+        idle={idle}
+        isSpeaking={isSpeaking}
+        isThinking={isThinking}
+        isListening={isListening}
+        onToggleState={toggleVoice}
+      />}
 
-      <div className="generatedImage-component">
+      <div className="generatedImage-component hidden">
+        <p className="closePopup">Close</p>
         {imageName && (
           <ImageCard
             userId="123"
@@ -256,6 +260,7 @@ function AudioRecorder() {
         {/* {imageUrl &&  <img  src={imageUrl} alt="" width={'500px'} />}
       {mediaRecorderRef.current && <audio src={mediaRecorderRef.current} autoPlay  />}
       {sendStatus && <p>{sendStatus}</p>} */}
+
       </div>
 
       <ChatLog />
@@ -267,7 +272,7 @@ function AudioRecorder() {
         <p className="recordingCountdown">{count}s</p>
         <button
           className="voiceAssistant-button"
-          onClick={()=>{startRecording();toggleVoice('listening')}}
+          onClick={() => { startRecording(); toggleVoice('listening') }}
           disabled={recording}
         >
           {recording ? (
@@ -279,7 +284,7 @@ function AudioRecorder() {
         <div className="deleteRecording" onClick={stopRecordingManually}>
           <Trash2 size="22" />
         </div>
-        <div className="sendRecording" onClick={()=>{stopRecording();toggleVoice('thinking')}}>
+        <div className="sendRecording" onClick={() => { stopRecording(); toggleVoice('thinking') }}>
           <SendHorizontal size="25" />
         </div>
       </div>

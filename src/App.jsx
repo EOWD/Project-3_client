@@ -10,9 +10,11 @@ import Home from "./components/Home";
 import Voice from "./components/Voice";
 import Drive from "./components/drive/Drive";
 import DriveImages from "./components/drive/Images/Images";
+import Calendar from "./components/drive/Calendar/Calendar";
+import Explore from "./components/drive/Explore";
 
+import Call from './components/assistant/callAssistant'
 import LoggedIn from "./components/controllers/LoggedIn";
-
 import Chat from "./components/chat/Chat";
 
 
@@ -33,9 +35,9 @@ function App() {
           path="/login"
           element={
             <LoggedIn>
-            <Layout>
-              <Login />
-            </Layout>
+              <Layout>
+                <Login />
+              </Layout>
             </LoggedIn>
           }
         />
@@ -45,6 +47,7 @@ function App() {
             <IsPrivate>
               <Layout>
                 <Profile />
+                <Call />
               </Layout>
             </IsPrivate>
           }
@@ -55,6 +58,7 @@ function App() {
             <IsPrivate>
               <Layout>
                 <Voice />
+                <Call />
               </Layout>
             </IsPrivate>
           }
@@ -62,46 +66,73 @@ function App() {
         <Route
           path="/drive"
           element={
-            <Layout>
-              <Drive />
-            </Layout>
+            <IsPrivate>
+              <Layout>
+                <Drive />
+                <Call />
+              </Layout>
+            </IsPrivate>
           }
         />
         <Route
           path="/"
           element={
-            <Layout>
-              <Home />
-            </Layout>
-          }/>
+            <IsPrivate>
+              <Layout>
+                <Voice />
+              </Layout>
+            </IsPrivate>
+          } />
         <Route
           path="/tools"
           element={
-            <Layout>
-              <Home />
-            </Layout>
-          }/>
+            <IsPrivate>
+              <Layout>
+                <Home />
+                <Call />
+              </Layout>
+            </IsPrivate>
+          } />
         <Route
           path="/drive/images"
           element={
-            <Layout>
-              <DriveImages />
-            </Layout>
-          }/>
+            <IsPrivate>
+              <Layout>
+                <DriveImages />
+                <Call />
+              </Layout>
+            </IsPrivate>
+          } />
         <Route
           path="/drive/calendar"
           element={
-            <Layout>
-              <DriveImages />
-            </Layout>
-          }/>
+            <IsPrivate>
+              <Layout>
+                <Calendar />
+                <Call />
+              </Layout>
+            </IsPrivate>
+          } />
         <Route
           path="/drive/diary"
           element={
-            <Layout>
-              <DriveImages />
-            </Layout>
-          }/>
+            <IsPrivate>
+              <Layout>
+                <DriveImages />
+                <Call />
+              </Layout>
+            </IsPrivate>
+          } />
+        <Route
+          path="/explore"
+          element={
+            <IsPrivate>
+              <Layout>
+                <Explore />
+                <Call />
+              </Layout>
+            </IsPrivate>
+          } />
 
         <Route path="*" element={<h2>404 Page Not Found</h2>} />
       </Routes>
