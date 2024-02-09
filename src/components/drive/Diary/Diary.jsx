@@ -17,7 +17,7 @@ function Diary() {
     useEffect(() => {
         // Check if `diaries` is loaded and has at least one entry
         if (diaries && diaries.length > 0) {
-            setSelectedEntry(diaries[0]);
+            setSelectedEntry(diaries[diaries.length - 1]);
             setEditableEntry(diaries[0].entry);
             setEditableTitle(diaries[0].entry);
         }
@@ -52,9 +52,9 @@ function Diary() {
     return (
         <div className="diaryContainer">
             <div className="allEntriesContainer">
-                {diaries.map((entry) => {
+                {[...diaries].reverse().map((entry) => {
                     return (
-                    <div className="singleEntry" onClick={() => {setSelectedEntry(entry)}} key={entry._id}>
+                    <div className={selectedEntry?._id === entry._id ? "singleEntry selected" : "singleEntry"} onClick={() => {setSelectedEntry(entry)}} key={entry._id}>
                         <p className="entryDate">{entry.date.slice(0, 10)}</p>
                         <p>{entry.entry}</p>
                         <p className="entryTextTeaser">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam recusandae corporis veritatis harum dolore...</p>

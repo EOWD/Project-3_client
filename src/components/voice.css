@@ -7,7 +7,7 @@
     position: fixed;
     bottom: 50px;
     left: 50%;
-    transform: translate(-15%);
+    transform: translate(-50px);
     background-color: rgb(14, 14, 14);
     padding: 20px 40px;
     border-radius: 20px;
@@ -365,4 +365,14 @@
     100% {
         transform: translateX(0px);
     }
+}
+
+
+/* close status window */
+
+.closeStatus {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    cursor: pointer;
 }

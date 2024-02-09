@@ -6,7 +6,6 @@ import { Link, NavLink } from "react-router-dom";
 
 function Images() {
     const { images,refreshData } = useContext(UserDataContext);
-    console.log(images)
     const [selectedImage, setSelectedImage] = useState(null);
    // useEffect(()=>{refreshData()},[])
     // Function to view single image
