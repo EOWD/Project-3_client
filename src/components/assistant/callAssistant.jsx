@@ -4,7 +4,7 @@ import { UserContext } from "../../context/UserContext";
 import { UserDataContext } from "../../context/UserDataContext.jsx";
 import ImageCard from "../drive/ImageCard.jsx";
 
-import { Mic, Trash2, SendHorizontal, GalleryVerticalEnd, StopCircle } from "lucide-react";
+import { Mic, Trash2, SendHorizontal, GalleryVerticalEnd, StopCircle, X } from "lucide-react";
 import { useLocation } from 'react-router-dom';
 
 
@@ -47,7 +47,6 @@ function AudioRecorder() {
   const [isListening, setIsListening] = useState(false);
 
   useEffect(() => {
-
     refreshData();
   }, [isSpeaking]);
 
@@ -152,6 +151,7 @@ function AudioRecorder() {
       }, 300000);
     } catch (error) {
       console.error("Error accessing microphone:", error);
+      setSendStatus("We can't access your microphone or you don't have a microphone available")
     }
   };
 
@@ -186,8 +186,7 @@ function AudioRecorder() {
             `${server}/call/assistant`,
             formData
           );
-
-          setSendStatus("Sent successfully");
+          
           toggleVoice("thinking");
 
           console.log(response.data);
@@ -227,7 +226,7 @@ function AudioRecorder() {
       toggleVoice('speaking')
     }
 
-    toggleVoice("speaking");
+    /* toggleVoice("speaking"); */
 
   }, [audioUrl]);
 
@@ -291,7 +290,7 @@ function AudioRecorder() {
       <ChatLog />
 
       <div className={recording ? "secondsDeleteStop-buttonsContainer isRecording" : "secondsDeleteStop-buttonsContainer"}>
-        {sendStatus && (<p className="sendStatus-error">{sendStatus}</p>)} {/* SHOWING A ERROR WHEN SENDING FAILED */}
+        {sendStatus && (<p className="sendStatus-error">{sendStatus}<span className="closeStatus" onClick={() => {setSendStatus(null); }}><X /></span></p>)} {/* SHOWING A ERROR WHEN SENDING FAILED */}
         <div className="deleteRecording" onClick={stopRecordingManually}>
             <Trash2 size="22" />
         </div>
@@ -306,10 +305,8 @@ function AudioRecorder() {
         
         <button
           className="voiceAssistant-button"
-
           onClick={() => { startRecording(); toggleVoice('listening'); setSendStatus(null); }}
           disabled={recording || isThinking || isSpeaking}
-
         >
           {recording ? (
             <Mic size="32" className="recording" />
