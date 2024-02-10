@@ -12,7 +12,7 @@ function Layout({children}) {
       <Header/>
       <div id={isLoggedIn ? 'main' : 'guestMain'}>
         {children}
-      <Footer />
+      {/* <Footer /> */}
       </div>
     </div>
   )
