@@ -187,7 +187,7 @@ function AudioRecorder() {
             formData
           );
 
-          setSendStatus("Sent successfully");
+          
           toggleVoice("thinking");
 
           console.log(response.data);
@@ -227,7 +227,7 @@ function AudioRecorder() {
       toggleVoice('speaking')
     }
 
-    toggleVoice("speaking");
+    
 
   }, [audioUrl]);
 
