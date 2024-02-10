@@ -14,7 +14,7 @@ function Explore() {
     const fetchData = async () => {
       try {
         // Use user.id directly in your request
-        const images = await axios.post(`${server}/drive/user/images`, {
+        const images = await axios.post(`${server}/drive/explore`, {
           id: user.id,
         });
         let unfilteredImages = images.data.data
