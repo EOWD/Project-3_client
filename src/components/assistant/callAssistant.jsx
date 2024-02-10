@@ -186,7 +186,8 @@ function AudioRecorder() {
             `${server}/call/assistant`,
             formData
           );
-          
+
+       
           toggleVoice("thinking");
 
           console.log(response.data);
@@ -226,7 +227,6 @@ function AudioRecorder() {
       toggleVoice('speaking')
     }
 
-    /* toggleVoice("speaking"); */
 
   }, [audioUrl]);
 
