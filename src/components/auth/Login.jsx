@@ -32,7 +32,7 @@ function Login() {
         if (data.Assistant === true) {
           console.log("Navigating to /profile"); // Debugging
           return authenticateUser().then(() => {
-            navigate("/profile");
+            navigate("/");
           });
         } else if (data.Assistant === false) {
           console.log("Navigating to /create-assistant"); // Debugging
