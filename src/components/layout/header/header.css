@@ -61,10 +61,10 @@ nav:not(.toggled) a:hover {
     background-color: black;
     transition: all 0.3s;
     flex-direction: column;
-    padding: 0 20px;
+    padding: 20px 20px 0 20px;
     width: 150px;
     min-width: 150px;
-    height: 100%;
+    height: calc(100% - 20px);
 }
 
 /* HAMBURGER ICON */
