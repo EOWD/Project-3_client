@@ -8,10 +8,10 @@ import IsPrivate from "./components/controllers/Private";
 import Layout from "./components/layout/Layout";
 import Home from "./components/Home";
 import Voice from "./components/Voice";
-import Drive from "./components/drive/Drive";
+import Drive from "./components/drive/Drive/Drive";
 import DriveImages from "./components/drive/Images/Images";
 import Calendar from "./components/drive/Calendar/Calendar";
-import Explore from "./components/drive/Explore";
+import Explore from "./components/drive/Explore/Explore";
 
 import CreateAssistantForm from "./components/assistant/create-assistant/createAssistant";
 
@@ -21,13 +21,15 @@ import Diary from "./components/drive/Diary/Diary";
 import Call from './components/assistant/callAssistant'
 import LoggedIn from "./components/controllers/LoggedIn";
 import Chat from "./components/chat/Chat";
+import { SkeletonTheme } from "react-loading-skeleton";
 
 
 function App() {
   return (
     <div>
-      <Routes>
 
+      <SkeletonTheme baseColor="rgb(14, 14, 14)" highlightColor="#292d33">
+      <Routes>
         <Route
           path="/signup"
           element={
@@ -154,6 +156,7 @@ function App() {
 
         <Route path="*" element={<h2>404 Page Not Found</h2>} />
       </Routes>
+      </SkeletonTheme>
     </div>
   );
 }

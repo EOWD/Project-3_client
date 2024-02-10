@@ -1,8 +1,8 @@
 import { useEffect, useContext, useState } from "react";
-import { UserContext } from "../../context/UserContext";
+import { UserContext } from "../../../context/UserContext";
 import axios from "axios";
-import ImageCard from "../drive/ImageCard";
-import LoadingSpinner from "../layout/loadingSpinne/LoadingSpinner";
+import ImageCard from "../ImageCard";
+import LoadingSpinner from "../../layout/loadingSpinne/LoadingSpinner";
 import "./Explorer.css";
 
 function Explore() {
@@ -17,7 +17,8 @@ function Explore() {
         const images = await axios.post(`${server}/drive/user/images`, {
           id: user.id,
         });
-        setItems(images.data.data);
+        let unfilteredImages = images.data.data
+        setItems(unfilteredImages.filter(one => one.share === true));
       } catch (error) {
         console.log(error);
       }

@@ -3,27 +3,39 @@ import { UserDataContext } from "../../../context/UserDataContext";
 import "./Images.css";
 import { Trash2, Minimize2, Share2, DownloadCloud } from 'lucide-react';
 import { Link, NavLink } from "react-router-dom";
+import axios from "axios";
+import { Modal, Button, ButtonToolbar, Placeholder, Checkbox } from 'rsuite';
+
 
 function Images() {
-    const { images,refreshData } = useContext(UserDataContext);
-    const [selectedImage, setSelectedImage] = useState(null);
-   // useEffect(()=>{refreshData()},[])
+    const { images, selectedImage, refreshData } = useContext(UserDataContext);
+    const [bigImage, setBigImage] = useState(null);
+    const [bigImageName, setBigImageName] = useState(null)
+    const [bigImageId, setbigImageId] = useState(null)
+    const [bigImageShare, setbigImageShare] = useState(null)
+    
+    const [toggleShareState, setToggleShareState] = useState(null)
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const API_URL = import.meta.env.VITE_APP_SERVER;
+
+    useEffect(() => {
+        if(selectedImage && selectedImage.imageData){
+            setBigImage(`data:image/jpeg;base64,${selectedImage.imageData}`);
+            setBigImageName(selectedImage.name)
+            setbigImageId(selectedImage._id)
+            setbigImageShare(selectedImage.share)
+        }
+    }, [selectedImage]);
+    console.log(bigImageShare)
+
     // Function to view single image
     function viewSingleImage(imageData) {
-        setSelectedImage(imageData);
+        setBigImage(imageData);
     }
-
-    /* const handleShare = (imageName, imageUrl) => {
-        if (navigator.share) {
-          navigator.share({
-            title: imageName,
-            text: prompt,
-            url: imageUrl,
-          }).catch(console.error);
-        } else {
-          alert("Sharing is not supported in this browser.");
-        }
-    };
 
     const handleDownload = (imageName, imageUrl) => {
         const link = document.createElement('a');
@@ -32,34 +44,80 @@ function Images() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-    }; */
+    };
+
+    async function deleteThisImage(imageId){
+        try {
+            const response = await axios.post(API_URL+"/drive/user/images/delete",{imageId})
+            await refreshData()
+            setBigImage(null)
+            /* console.log(response) */
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function toggleShare(){
+        try {
+            let share
+            if(toggleShareState === true){
+                share = "true"
+            } else {
+                share = "false"
+            }
+            const response = await axios.post(API_URL+"/drive/image/share",{share: share, imageId: bigImageId})
+            await refreshData()
+            setbigImageShare(toggleShareState)
+            /* console.log(response) */
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <div className="outerContainer">
-            <div className={selectedImage ? "allImages-container selected" : "allImages-container"}>
+            <div className={bigImage ? "allImages-container selected" : "allImages-container"}>
                 {images.map((image) => (
                     <div key={image._id} className="imageContainer">
                         <img
                             className="image"
-                            onClick={() => viewSingleImage(`data:image/jpeg;base64,${image.imageData}`)}
+                            onClick={() => {viewSingleImage(`data:image/jpeg;base64,${image.imageData}`); setBigImageName(image.name); setbigImageId(image._id); setbigImageShare(image.share)}}
                             src={`data:image/jpeg;base64,${image.imageData}`}
                             alt={image.name}
                         />
                     </div>
                 ))}
             </div>
-            <div className={selectedImage ? "viewSingleImage-container selected" : "viewSingleImage-container"}>
-                <div>{selectedImage && <img src={selectedImage} alt="Selected" />}</div>
-                <div>{selectedImage && <img className="blurBG" src={selectedImage} alt="Selected" />}</div>
+            <div className={bigImage ? "viewSingleImage-container selected" : "viewSingleImage-container"}>
+                <div>{bigImage && <img src={bigImage} alt="Selected" />}</div>
+                <div>{bigImage && <img className="blurBG" src={bigImage} alt="Selected" />}</div>
                 <div className="actionButtons">
-                    <Minimize2 color="gray" className="closeSingleView" onClick={()=>setSelectedImage(null)} />
+                    <Minimize2 color="gray" className="closeSingleView" onClick={()=>setBigImage(null)} />
                     <div>
-                        <DownloadCloud color="gray" />
-                        <Share2 onClick={()=>handleShare} color="gray" />
-                        <Trash2 color="gray" />
+                        <DownloadCloud onClick={() => {handleDownload(bigImageName, bigImage)}} color="gray" />
+                        <Share2 onClick={()=>{handleOpen()}} color="gray" />
+                        <Trash2 onClick={()=>{deleteThisImage(bigImageId)}} color="gray" />
                     </div>
                 </div>
             </div>
+
+            <Modal size={400} open={open} onClose={handleClose}>
+                <Modal.Header>
+                    <Modal.Title>Publish the image on the Marketplace</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <br />
+                    <Checkbox onChange={()=>{setToggleShareState(!bigImageShare)}} {...(bigImageShare ? { defaultChecked: true } : {})}> Publish</Checkbox>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button onClick={()=>{handleClose(); toggleShare()}} appearance="primary">
+                    Ok
+                </Button>   
+                <Button onClick={handleClose} appearance="subtle">
+                    Cancel
+                </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
