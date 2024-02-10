@@ -20,23 +20,24 @@ const API_URL = import.meta.env.VITE_APP_SERVER;
   const handleEmail = (event) => setEmail(event.target.value);
   const handlePassword = (event) => setPassword(event.target.value);
   const handlePhoneNumber = (event) => setPhoneNumber(event.target.value);
-  const handleSignup = (event) => {
+
+  
+  const handleSignup = async (event) => {
     event.preventDefault();
 
     const requestBody = { username, email, password, phoneNumber };
-    axios
-      .post(`${API_URL}/auth/signup`, requestBody)
-      .then((response) => {
-        console.log(response.data);
-        navigate("/login");
-      })
-
-      .catch((error) => {
-        console.log(error);
-        if(error.response.data.message){
-          setErrorMessage(error.response.data.message);
-        }
-      });
+    try {
+      const response = await axios.post(`${API_URL}/auth/signup`, requestBody);
+      console.log(response.data);
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+      if (error.response && error.response.data && error.response.data.message) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage("An unexpected error occurred.");
+      }
+    }
   };
 
   return (

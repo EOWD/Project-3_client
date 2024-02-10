@@ -17,9 +17,9 @@ function Diary() {
     useEffect(() => {
         // Check if `diaries` is loaded and has at least one entry
         if (diaries && diaries.length > 0) {
-            setSelectedEntry(diaries[0]);
+            setSelectedEntry(diaries[diaries.length - 1]);
             setEditableEntry(diaries[0].entry);
-            setEditableTitle(diaries[0].entry);
+            setEditableTitle(diaries[0].entryName);
         }
         document.querySelector('.diaryContainer').style.height = `${window.innerHeight}px`;
     }, [diaries]);
@@ -27,7 +27,7 @@ function Diary() {
     useEffect(() => {
         if (selectedEntry) {
             setEditableEntry(selectedEntry.entry);
-            setEditableTitle(selectedEntry.entry);
+            setEditableTitle(selectedEntry.entryName);
         }
     }, [selectedEntry]);
 
@@ -52,18 +52,19 @@ function Diary() {
     return (
         <div className="diaryContainer">
             <div className="allEntriesContainer">
-                {diaries.map((entry) => {
+                {[...diaries].reverse().map((entry) => {
                     return (
-                    <div className="singleEntry" onClick={() => {setSelectedEntry(entry)}} key={entry._id}>
-                        <p className="entryDate">{entry.date.slice(0, 10)}</p>
-                        <p>{entry.entry}</p>
-                        <p className="entryTextTeaser">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam recusandae corporis veritatis harum dolore...</p>
+                    <div className={selectedEntry?._id === entry._id ? "singleEntry selected" : "singleEntry"} onClick={() => {setSelectedEntry(entry)}} key={entry._id}>
+                        <p className="entryDate">{entry.date}</p>
+                        {console.log(entry)}
+                        <p>{entry.entryName}</p>
+                        <p className="entryTextTeaser">{entry.entry}</p>
                     </div>
                     )
                 })}
             </div>
             <div className="currentlyOpenEntry">
-                <h2 className="entryHeadline" onClick={() => {toggleEditEntry("editEntryHeadline-container", "entryHeadline")}}>{selectedEntry && selectedEntry.entry}</h2>
+                <h2 className="entryHeadline" onClick={() => {toggleEditEntry("editEntryHeadline-container", "entryHeadline")}}>{selectedEntry && selectedEntry.entryName}</h2>
                 <div className="editEntryHeadline-container">
                     <Input 
                       className="editEntryTitle" 
@@ -84,7 +85,7 @@ function Diary() {
                     <br></br>
                     <Button onClick={() => {toggleEditEntry("editEntry-container", "staticText")}}>Save</Button>
                 </div>
-                <p onClick={() => {toggleEditEntry("editEntry-container", "staticText")}} className="staticText">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam nemo corrupti facilis quam incidunt dolorum illum quo quae, magnam deleniti! Voluptatum dicta vel fugit saepe iusto eveniet sed nihil eum!</p>
+                <p onClick={() => {toggleEditEntry("editEntry-container", "staticText")}} className="staticText">{selectedEntry && selectedEntry.entry}</p>
                 <br />
                 <hr />
                 <br />

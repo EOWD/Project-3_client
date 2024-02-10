@@ -13,6 +13,7 @@ const UserDataContextWrapper = ({ children }) => {
   const [diaries, setDiaries] = useState([]);
   const [calendars, setCalendars] = useState([]);
   const [chatLog, setLog] = useState([]);
+  const [selectedImage, setSelectedImage] = useState([])
 
   // Define a function to fetch and update the context data
   const refreshData = async () => {
@@ -44,7 +45,7 @@ const UserDataContextWrapper = ({ children }) => {
   }, [user]);
 
   return (
-    <UserDataContext.Provider value={{ entries, notes, diaries, calendars, images, chatLog, refreshData }}>
+    <UserDataContext.Provider value={{ entries, notes, diaries, calendars, images, chatLog, refreshData, selectedImage, setSelectedImage }}>
       {children}
     </UserDataContext.Provider>
   );
