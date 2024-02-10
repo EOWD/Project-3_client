@@ -55,12 +55,12 @@ function Header() {
                 <AudioLines size={iconSize} /> <span className="toggledName">VoiceAI</span>
               </NavLink>
             </div>
-            <br></br>
+            {/* <br></br>
             <div>
               <NavLink to={'/tools'} className="toggledIcon">
                 <Sliders size={iconSize} /> <span className="toggledName">AI Tools</span>
               </NavLink>
-            </div>
+            </div> */}
             <br></br>
             <div>
               <div>
@@ -89,7 +89,7 @@ function Header() {
             </div>
             <div>
               <NavLink to={'/explore'} className="toggledIcon">
-                <Globe size={iconSize} /> <span className="toggledName">Explore</span>
+                <Globe size={iconSize} /> <span className="toggledName">Virals</span>
               </NavLink>
             </div>
           </div>

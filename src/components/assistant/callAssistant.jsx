@@ -6,6 +6,7 @@ import ImageCard from "../drive/ImageCard.jsx";
 
 import { Mic, Trash2, SendHorizontal, GalleryVerticalEnd, StopCircle, X } from "lucide-react";
 import { useLocation } from 'react-router-dom';
+import { Modal, Button, Checkbox } from 'rsuite';
 
 
 import Circle from './audioVisualization/audioVisualizer'
@@ -15,6 +16,7 @@ import ChatLog from "../assistant/ChatLog.jsx"
 
 function AudioRecorder() {
   const [audioBlob, setAudioBlob] = useState(null);
+  const [genImage, setgenImage] = useState(null);
   const [imageName, setImageName] = useState(null);
   const [recording, setRecording] = useState(false);
   const recordingRef = useRef(recording);
@@ -45,6 +47,14 @@ function AudioRecorder() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
   const [isListening, setIsListening] = useState(false);
+
+  const [toggleShareState, setToggleShareState] = useState(null)
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const API_URL = import.meta.env.VITE_APP_SERVER;
 
   useEffect(() => {
     refreshData();
@@ -192,6 +202,7 @@ function AudioRecorder() {
           console.log(response.data);
           if (response.data.image) {
             const image = response.data.image.imageData;
+            setgenImage(image)
             setUrl(`data:image/png;base64,${image}`);
             setImageName(response.data.image.name);
 
@@ -260,6 +271,23 @@ function AudioRecorder() {
     }
   }
 
+  async function toggleShare(){
+      try {
+          let shareState
+          if(toggleShareState === true){
+              shareState = "true"
+          } else {
+              shareState = "false"
+          }
+          const response = await axios.post(API_URL+"/drive/image/share",{share: shareState, imageId: genImage._id})
+          await refreshData()
+          setgenImage(genImage.share = !genImage.share)
+          /* console.log(response) */
+      } catch (error) {
+          console.log(error)
+      }
+  }
+
   return (
     <div>
       {location.pathname === '/' && <Circle
@@ -279,6 +307,7 @@ function AudioRecorder() {
             imageUrl={imageUrl}
             imageVisible={imageVisible}
             setImageVisible={setImageVisible}
+            toggleOpenShare={handleOpen}
           />
         )}
         <audio id="audioPlayer" ref={audioElementRef}>
@@ -322,6 +351,32 @@ function AudioRecorder() {
         </div>
         
       </div>
+
+      <Modal size={400} open={open} onClose={handleClose}>
+          <Modal.Header>
+              <Modal.Title>Publish the image on the Marketplace</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+              <br />
+              <Checkbox 
+                onChange={() => {
+                  const updatedGenImage = { ...genImage, share: !genImage.share };
+                  setgenImage(updatedGenImage);
+                }} 
+                {...(genImage?.share ? { defaultChecked: true } : {})}
+              >
+                Publish
+              </Checkbox>
+          </Modal.Body>
+          <Modal.Footer>
+          <Button onClick={()=>{handleClose(); toggleShare()}} appearance="primary">
+              Ok
+          </Button>   
+          <Button onClick={handleClose} appearance="subtle">
+              Cancel
+          </Button>
+          </Modal.Footer>
+      </Modal>
     </div>
   );
 }

@@ -2,9 +2,11 @@ import React, { useState, useContext,useEffect } from "react";
 import { UserDataContext } from "../../../context/UserDataContext";
 import "./Images.css";
 import { Trash2, Minimize2, Share2, DownloadCloud } from 'lucide-react';
-import { Link, NavLink } from "react-router-dom";
 import axios from "axios";
-import { Modal, Button, ButtonToolbar, Placeholder, Checkbox } from 'rsuite';
+import { Modal, Button, Checkbox } from 'rsuite';
+
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 
 function Images() {
@@ -30,7 +32,6 @@ function Images() {
             setbigImageShare(selectedImage.share)
         }
     }, [selectedImage]);
-    console.log(bigImageShare)
 
     // Function to view single image
     function viewSingleImage(imageData) {
@@ -77,16 +78,26 @@ function Images() {
     return (
         <div className="outerContainer">
             <div className={bigImage ? "allImages-container selected" : "allImages-container"}>
-                {images.map((image) => (
-                    <div key={image._id} className="imageContainer">
-                        <img
-                            className="image"
-                            onClick={() => {viewSingleImage(`data:image/jpeg;base64,${image.imageData}`); setBigImageName(image.name); setbigImageId(image._id); setbigImageShare(image.share)}}
-                            src={`data:image/jpeg;base64,${image.imageData}`}
-                            alt={image.name}
-                        />
-                    </div>
-                ))}
+            {
+                images.length < 1 ? (
+                    Array.from({ length: 21 }).map((_, index) => ( // Adjust length as needed
+                        <div key={index} className="imageContainer">
+                            <Skeleton height={200} width={200} /> {/* Adjust size as needed */}
+                        </div>
+                    ))
+                ) : (
+                    [...images].reverse().map((image) => (
+                        <div key={image._id} className="imageContainer">
+                            <img
+                                className="image"
+                                onClick={() => {viewSingleImage(`data:image/jpeg;base64,${image.imageData}`); setBigImageName(image.name); setbigImageId(image._id); setbigImageShare(image.share)}}
+                                src={`data:image/jpeg;base64,${image.imageData}`}
+                                alt={image.name}
+                            />
+                        </div>
+                    ))
+                )
+            }
             </div>
             <div className={bigImage ? "viewSingleImage-container selected" : "viewSingleImage-container"}>
                 <div>{bigImage && <img src={bigImage} alt="Selected" />}</div>

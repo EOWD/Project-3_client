@@ -2,7 +2,7 @@ import React from 'react';
 import "./ImageCard.css"
 import { Download, Share2, X } from 'lucide-react';
 
-const ImageCard = ({ userId, imageName, prompt, imageUrl, id, imageVisible, setImageVisible }) => {
+const ImageCard = ({ userId, imageName, prompt, imageUrl, id, imageVisible, setImageVisible, toggleOpenShare }) => {
 
   const handleShare = () => {
     if (navigator.share) {
@@ -36,7 +36,7 @@ const ImageCard = ({ userId, imageName, prompt, imageUrl, id, imageVisible, setI
           <div className="imageNameAndShare">
             <p>{imageName}</p>
             <div className="shareDownloadButtons">
-              <button onClick={handleShare}><Share2 /></button>
+              <button onClick={()=>{toggleOpenShare()}}><Share2 /></button>
               <button onClick={handleDownload}><Download /></button>
             </div>
           </div>
