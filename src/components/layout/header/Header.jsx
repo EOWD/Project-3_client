@@ -31,7 +31,7 @@ function Header() {
 
   if (!isLoggedIn) { /* GUEST NAV */
     return (
-      <div className="header-container">
+      <div className="header-container loggedOut">
         <div className="guestNav-container">
           <h2 className="guestNav-logo">Viral <span className="logoBorder">PILOT</span></h2>
           <nav className="guestNav">

@@ -10,7 +10,7 @@ function Layout({children}) {
   return (
     <div className='container'>
       <Header/>
-      <div id={isLoggedIn ? 'main' : ''}>
+      <div id={isLoggedIn ? 'main' : 'guestMain'}>
         {children}
       <Footer />
       </div>
