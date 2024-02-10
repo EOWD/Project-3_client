@@ -63,6 +63,10 @@
 .entryTextTeaser {
     font-size: 15px;
     color: rgb(172, 172, 172);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
 }
 
 

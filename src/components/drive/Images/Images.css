@@ -16,6 +16,11 @@
     display: inline-flex;
     width: 30%;
     height: 100%;
+    max-height: 800px;
+    overflow: auto;
+    margin-right: 70px;
+    justify-content: flex-end;
+    overflow-x: hidden;
 }
 
 
