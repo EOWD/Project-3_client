@@ -1,11 +1,13 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { UserContext } from '../../../context/UserContext';
+import { UserDataContext } from '../../../context/UserDataContext';
 import { useContext } from 'react'
 import { Sliders, CircleUserRound, Globe, LogOut, Folder, AudioLines, Image, CalendarDays, NotebookPen } from 'lucide-react';
 
 function Header() {
   const { isLoggedIn, isLoading, handleLogout } = useContext(UserContext);
+  const { setSelectedImage } = useContext(UserDataContext);
   const iconSize = 28;
 
   /* function toggleSidebar() {
@@ -62,15 +64,12 @@ function Header() {
             <br></br>
             <div>
               <div>
-                <NavLink to={'/drive'} className="toggledIcon">
-                  <Folder size={iconSize} /> <span className="toggledName">Drive</span>
-                </NavLink>
+                <NavLink onClick={() => {setSelectedImage(null)}} to={'/drive/images'}><Image /><span className="toggledName">Images</span></NavLink>
               </div>
-              <div className="subMenu">
-                <NavLink to={'/drive/images'}><Image />Images</NavLink>
-                <NavLink to={'/drive/calendar'}><CalendarDays />Calendar</NavLink>
-                <NavLink to={'/drive/diary'}><NotebookPen />Diary</NavLink>
-              </div>
+              <br></br>
+              <NavLink to={'/drive/calendar'}><CalendarDays /><span className="toggledName">Calendar</span></NavLink>
+              <br></br>
+              <NavLink to={'/drive/diary'}><NotebookPen /><span className="toggledName">Diary</span></NavLink>
             </div>
             <br></br>
             <div>
