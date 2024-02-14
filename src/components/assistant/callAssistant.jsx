@@ -4,17 +4,22 @@ import { UserContext } from "../../context/UserContext";
 import { UserDataContext } from "../../context/UserDataContext.jsx";
 import ImageCard from "../drive/ImageCard.jsx";
 
-import { Mic, Trash2, SendHorizontal, GalleryVerticalEnd, StopCircle, X } from "lucide-react";
-import { useLocation } from 'react-router-dom';
-import { Modal, Button, Checkbox } from 'rsuite';
+import {
+  Mic,
+  Trash2,
+  SendHorizontal,
+  GalleryVerticalEnd,
+  StopCircle,
+  X,
+} from "lucide-react";
+import { useLocation } from "react-router-dom";
+import { Modal, Button, Checkbox } from "rsuite";
 
-
-import Circle from './audioVisualization/audioVisualizer'
-import ChatLog from "../assistant/ChatLog.jsx"
-
-
+import Circle from "./audioVisualization/audioVisualizer";
+import ChatLog from "../assistant/ChatLog.jsx";
 
 function AudioRecorder() {
+  const server = import.meta.env.VITE_APP_SERVER;
   const [audioBlob, setAudioBlob] = useState(null);
   const [genImage, setgenImage] = useState(null);
   const [imageName, setImageName] = useState(null);
@@ -27,8 +32,8 @@ function AudioRecorder() {
   const [stream, setStream] = useState("stream");
   //const[image,setImage]=useState(null);
   const [imageUrl, setUrl] = useState(null);
-  const [imageVisible, setImageVisible] = useState(false)
-  const server = import.meta.env.VITE_APP_SERVER;
+  const [imageVisible, setImageVisible] = useState(false);
+
   const { chatLog, images, calendars, refreshData } =
     useContext(UserDataContext);
   const { user } = useContext(UserContext);
@@ -48,7 +53,7 @@ function AudioRecorder() {
   const [isThinking, setIsThinking] = useState(false);
   const [isListening, setIsListening] = useState(false);
 
-  const [toggleShareState, setToggleShareState] = useState(null)
+  const [toggleShareState, setToggleShareState] = useState(null);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -60,10 +65,9 @@ function AudioRecorder() {
     refreshData();
   }, [isSpeaking]);
 
-    useEffect(() => {
+  useEffect(() => {
     recordingRef.current = recording;
   }, [recording]);
-
 
   useEffect(() => {
     const audioElement = audioElementRef.current;
@@ -108,7 +112,8 @@ function AudioRecorder() {
 
     countdownTimerIdRef.current = setInterval(() => {
       setCount((prevCount) => {
-        if (recordingRef.current) { // Use recordingRef here
+        if (recordingRef.current) {
+          // Use recordingRef here
           return prevCount + 1;
         }
         clearInterval(countdownTimerIdRef.current);
@@ -122,7 +127,7 @@ function AudioRecorder() {
     } else {
       const minutes = Math.floor(totalSeconds / 60);
       const seconds = totalSeconds % 60;
-      return `${minutes}m ${seconds.toString().padStart(2, '0')}s`;
+      return `${minutes}m ${seconds.toString().padStart(2, "0")}s`;
     }
   };
 
@@ -130,7 +135,6 @@ function AudioRecorder() {
 
   const startRecording = async () => {
     try {
-      
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
       const mediaRecorder = new MediaRecorder(stream);
@@ -161,7 +165,9 @@ function AudioRecorder() {
       }, 300000);
     } catch (error) {
       console.error("Error accessing microphone:", error);
-      setSendStatus("We can't access your microphone or you don't have a microphone available")
+      setSendStatus(
+        "We can't access your microphone or you don't have a microphone available"
+      );
     }
   };
 
@@ -197,18 +203,17 @@ function AudioRecorder() {
             formData
           );
 
-       
           toggleVoice("thinking");
 
           console.log(response.data);
           if (response.data.image) {
             const image = response.data.image.imageData;
-            setgenImage(image)
+            setgenImage(image);
             setUrl(`data:image/png;base64,${image}`);
             setImageName(response.data.image.name);
 
             setPrompt(response.data.image.prompt);
-            setImageVisible(true)
+            setImageVisible(true);
           }
 
           const inStream = response.data.Stream;
@@ -235,10 +240,8 @@ function AudioRecorder() {
       audioElementRef.current
         .play()
         .catch((error) => console.error("Playback was prevented:", error));
-      toggleVoice('speaking')
+      toggleVoice("speaking");
     }
-
-
   }, [audioUrl]);
 
   function toggleChatLog() {
@@ -259,10 +262,8 @@ function AudioRecorder() {
     }
   }
 
-
-
   function stopAudio() {
-    const audioPlayer = document.getElementById('audioPlayer');
+    const audioPlayer = document.getElementById("audioPlayer");
     audioPlayer.pause(); // Pause the audio
     setIdle(false);
     setIsSpeaking(false);
@@ -271,34 +272,44 @@ function AudioRecorder() {
     }
   }
 
-  async function toggleShare(){
-      try {
-          let shareState
-          if(toggleShareState === true){
-              shareState = "true"
-          } else {
-              shareState = "false"
-          }
-          const response = await axios.post(API_URL+"/drive/image/share",{share: shareState, imageId: genImage._id})
-          await refreshData()
-          setgenImage(genImage.share = !genImage.share)
-          /* console.log(response) */
-      } catch (error) {
-          console.log(error)
+  async function toggleShare() {
+    try {
+      let shareState;
+      if (toggleShareState === true) {
+        shareState = "true";
+      } else {
+        shareState = "false";
       }
+      const response = await axios.post(API_URL + "/drive/image/share", {
+        share: shareState,
+        imageId: genImage._id,
+      });
+      await refreshData();
+      setgenImage((genImage.share = !genImage.share));
+      /* console.log(response) */
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
     <div>
-      {location.pathname === '/' && <Circle
-        idle={idle}
-        isSpeaking={isSpeaking}
-        isThinking={isThinking}
-        isListening={isListening}
-        onToggleState={toggleVoice}
-      />}
-      <div className={imageVisible ? "generatedImage-component" : "generatedImage-component hidden"}>
-
+      {location.pathname === "/" && (
+        <Circle
+          idle={idle}
+          isSpeaking={isSpeaking}
+          isThinking={isThinking}
+          isListening={isListening}
+          onToggleState={toggleVoice}
+        />
+      )}
+      <div
+        className={
+          imageVisible
+            ? "generatedImage-component"
+            : "generatedImage-component hidden"
+        }
+      >
         {imageName && (
           <ImageCard
             userId="123"
@@ -313,28 +324,64 @@ function AudioRecorder() {
         <audio id="audioPlayer" ref={audioElementRef}>
           Your browser does not support the audio element.
         </audio>
-
       </div>
 
       <ChatLog />
 
-      <div className={recording ? "secondsDeleteStop-buttonsContainer isRecording" : "secondsDeleteStop-buttonsContainer"}>
-        {sendStatus && (<p className="sendStatus-error">{sendStatus}<span className="closeStatus" onClick={() => {setSendStatus(null); }}><X /></span></p>)} {/* SHOWING A ERROR WHEN SENDING FAILED */}
+      <div
+        className={
+          recording
+            ? "secondsDeleteStop-buttonsContainer isRecording"
+            : "secondsDeleteStop-buttonsContainer"
+        }
+      >
+        {sendStatus && (
+          <p className="sendStatus-error">
+            {sendStatus}
+            <span
+              className="closeStatus"
+              onClick={() => {
+                setSendStatus(null);
+              }}
+            >
+              <X />
+            </span>
+          </p>
+        )}{" "}
+        {/* SHOWING A ERROR WHEN SENDING FAILED */}
         <div className="deleteRecording" onClick={stopRecordingManually}>
-            <Trash2 size="22" />
+          <Trash2 size="22" />
         </div>
         <p className="recordingCountdown">{formatTime(count)}</p>
-        <button className={isSpeaking ? "stopAudioPlay isSpeaking" : "stopAudioPlay"} onClick={() => stopAudio()}><StopCircle size="32" /></button>
+        <button
+          className={isSpeaking ? "stopAudioPlay isSpeaking" : "stopAudioPlay"}
+          onClick={() => stopAudio()}
+        >
+          <StopCircle size="32" />
+        </button>
       </div>
-      <div className={recording ? "voiceAssistant-buttonWrapper isRecording" : isThinking ? "voiceAssistant-buttonWrapper isThinking" : isSpeaking ? "voiceAssistant-buttonWrapper isSpeaking" : "voiceAssistant-buttonWrapper"}>
-
+      <div
+        className={
+          recording
+            ? "voiceAssistant-buttonWrapper isRecording"
+            : isThinking
+            ? "voiceAssistant-buttonWrapper isThinking"
+            : isSpeaking
+            ? "voiceAssistant-buttonWrapper isSpeaking"
+            : "voiceAssistant-buttonWrapper"
+        }
+      >
         <div className="chatLogToggle" onClick={toggleChatLog}>
           <GalleryVerticalEnd size="25" />
         </div>
-        
+
         <button
           className="voiceAssistant-button"
-          onClick={() => { startRecording(); toggleVoice('listening'); setSendStatus(null); }}
+          onClick={() => {
+            startRecording();
+            toggleVoice("listening");
+            setSendStatus(null);
+          }}
           disabled={recording || isThinking || isSpeaking}
         >
           {recording ? (
@@ -344,38 +391,47 @@ function AudioRecorder() {
           )}
         </button>
 
-        
-        <div className={recording ? "sendRecording" : "sendRecording disabled"} onClick={() => { stopRecording(); toggleVoice('thinking') }}>
-
+        <div
+          className={recording ? "sendRecording" : "sendRecording disabled"}
+          onClick={() => {
+            stopRecording();
+            toggleVoice("thinking");
+          }}
+        >
           <SendHorizontal size="25" />
         </div>
-        
       </div>
 
       <Modal size={400} open={open} onClose={handleClose}>
-          <Modal.Header>
-              <Modal.Title>Publish the image on the Marketplace</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-              <br />
-              <Checkbox 
-                onChange={() => {
-                  const updatedGenImage = { ...genImage, share: !genImage.share };
-                  setgenImage(updatedGenImage);
-                }} 
-                {...(genImage?.share ? { defaultChecked: true } : {})}
-              >
-                Publish
-              </Checkbox>
-          </Modal.Body>
-          <Modal.Footer>
-          <Button onClick={()=>{handleClose(); toggleShare()}} appearance="primary">
-              Ok
-          </Button>   
-          <Button onClick={handleClose} appearance="subtle">
-              Cancel
+        <Modal.Header>
+          <Modal.Title>Publish the image on the Marketplace</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <br />
+          <Checkbox
+            onChange={() => {
+              const updatedGenImage = { ...genImage, share: !genImage.share };
+              setgenImage(updatedGenImage);
+            }}
+            {...(genImage?.share ? { defaultChecked: true } : {})}
+          >
+            Publish
+          </Checkbox>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            onClick={() => {
+              handleClose();
+              toggleShare();
+            }}
+            appearance="primary"
+          >
+            Ok
           </Button>
-          </Modal.Footer>
+          <Button onClick={handleClose} appearance="subtle">
+            Cancel
+          </Button>
+        </Modal.Footer>
       </Modal>
     </div>
   );
