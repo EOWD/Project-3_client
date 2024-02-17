@@ -18,31 +18,35 @@ function Login() {
 
   const handleEmail = (event) => setEmail(event.target.value);
   const handlePassword = (event) => setPassword(event.target.value);
-
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-
+  
     const requestBody = { email, password };
-    axios
-      .post(`${API_URL}/auth/login`, requestBody)
-      .then(({ data }) => {
-        console.log("Assistant value:", data.Assistant); // Debugging
-        localStorage.setItem("authToken", data.token);
-      
-        if (data.Assistant === true) {
-          console.log("Navigating to /profile"); // Debugging
-          return authenticateUser().then(() => {
-            navigate("/");
-          });
-        } else if (data.Assistant === false) {
-          console.log("Navigating to /create-assistant"); // Debugging
-          return authenticateUser().then(() => {
-            navigate("/createassistant");
-          });
-        }
-      })
+    try {
+      const { data } = await axios.post(`${API_URL}/auth/login`, requestBody);
+      console.log("Assistant value:", data.Assistant); // Debugging
+      localStorage.setItem("authToken", data.token);
+  
+      if (data.Assistant === true) {
+        console.log("Navigating to /profile"); // Debugging
+        await authenticateUser();
+        navigate("/");
+      } else if (data.Assistant === false) {
+        console.log("Navigating to /create-assistant"); // Debugging
+        await authenticateUser();
+        navigate("/createassistant");
+      }
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage("An unexpected error occurred.");
+      }
+      console.error("Login failed:", error);
+  
+    }
   };
-
+  
   return (
     <div className="login-container">
   
