@@ -207,9 +207,9 @@ function AudioRecorder() {
 
           console.log(response.data);
           if (response.data.image) {
-            const image = response.data.image.imageData;
+            const image = response.data.image.url;
             setgenImage(image);
-            setUrl(`data:image/png;base64,${image}`);
+            setUrl(image);
             setImageName(response.data.image.name);
 
             setPrompt(response.data.image.prompt);

@@ -17,8 +17,9 @@ const ImageCard = ({ userId, imageName, prompt, imageUrl, id, imageVisible, setI
   };
 
   const handleDownload = () => {
+    const downloadUrl = `${imageUrl}/fl_attachment:${imageName}/v1601234567/<public_id>.<format>`
     const link = document.createElement('a');
-    link.href = imageUrl;
+    link.href = downloadUrl;
     link.download = `${imageName}.png`; // or any other extension
     document.body.appendChild(link);
     link.click();
