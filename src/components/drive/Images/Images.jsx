@@ -44,7 +44,7 @@ function Images() {
     }
 
     const handleDownload = (imageName, imageUrl,id) => {
-        const encodedImageName = encodeURIComponent(imageName); // Ensure imageName is URL-safe
+       
         const downloadUrl = `https://res.cloudinary.com/djbugpgz9/image/upload/fl_attachment/${id}.png`;
 
         const link = document.createElement('a');

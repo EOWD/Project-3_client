@@ -10,16 +10,18 @@ function CalendarComponent() {
   }, []);
   function getTodoList(date) {
     const year = date.getFullYear();
+   
     const month = date.getMonth() + 1; // JavaScript months are 0-indexed
+    
     const day = date.getDate();
-    const dateString = `${year}-${month.toString().padStart(2, "0")}-${day
-      .toString()
-      .padStart(2, "0")}`;
-  
+   
+    const dateString = `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+  //
     return calendars
       .filter((entry) => {
         // Extract the date part from the entry's date and compare it to the current date string
         const entryDate = entry.date.split("T")[0];
+        
         return entryDate === dateString;
       })
       .map((entry) => {
@@ -38,6 +40,7 @@ function CalendarComponent() {
 
   function renderCell(date) {
     const list = getTodoList(date);
+    console.log (list)
     const displayList = list.filter((item, index) => index < 2);
 
     if (list.length) {
