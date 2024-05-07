@@ -2,7 +2,7 @@ import React from 'react';
 import "./ImageCard.css"
 import { Download, Share2, X } from 'lucide-react';
 
-const ImageCard = ({ userId, imageName, prompt, imageUrl, id, imageVisible, setImageVisible, toggleOpenShare }) => {
+const ImageCard = ({ userId, imageName, prompt, imageUrl, id, imageVisible, setImageVisible, toggleOpenShare,imageId }) => {
 
   const handleShare = () => {
     if (navigator.share) {
@@ -16,14 +16,17 @@ const ImageCard = ({ userId, imageName, prompt, imageUrl, id, imageVisible, setI
     }
   };
 
-  const handleDownload = () => {
+  const handleDownload = (imageName, imageUrl,id) => {
+       
+    const downloadUrl = `https://res.cloudinary.com/djbugpgz9/image/upload/fl_attachment/${imageId}.png`;
+
     const link = document.createElement('a');
-    link.href = imageUrl;
-    link.download = `${imageName}.png`; // or any other extension
+    link.href = downloadUrl;
+  
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
+};
 
   return (
     <div className='generateImage-wrapper'>

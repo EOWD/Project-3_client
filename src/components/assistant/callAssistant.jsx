@@ -23,6 +23,8 @@ function AudioRecorder() {
   const [audioBlob, setAudioBlob] = useState(null);
   const [genImage, setgenImage] = useState(null);
   const [imageName, setImageName] = useState(null);
+  const [imageId, setImageId] = useState(null);
+
   const [recording, setRecording] = useState(false);
   const recordingRef = useRef(recording);
   const [sendStatus, setSendStatus] = useState(null);
@@ -207,11 +209,11 @@ function AudioRecorder() {
 
           console.log(response.data);
           if (response.data.image) {
-            const image = response.data.image.imageData;
+            const image = response.data.image.url;
             setgenImage(image);
-            setUrl(`data:image/png;base64,${image}`);
+            setUrl(image);
             setImageName(response.data.image.name);
-
+            setImageId(response.data.image.public_id);
             setPrompt(response.data.image.prompt);
             setImageVisible(true);
           }
@@ -317,6 +319,7 @@ function AudioRecorder() {
             prompt={prompt}
             imageUrl={imageUrl}
             imageVisible={imageVisible}
+            imageId={imageId}
             setImageVisible={setImageVisible}
             toggleOpenShare={handleOpen}
           />

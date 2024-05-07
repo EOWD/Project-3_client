@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { UserContext } from '../../../context/UserContext';
 import { UserDataContext } from '../../../context/UserDataContext';
 import { useContext } from 'react'
-import { Sliders, CircleUserRound, Globe, LogOut, Folder, AudioLines, Image, CalendarDays, NotebookPen } from 'lucide-react';
+import { Sliders, CircleUserRound, Globe, LogOut, Folder, AudioLines, Image, CalendarDays, NotebookPen,CreditCard } from 'lucide-react';
 
 function Header() {
   const { isLoggedIn, isLoading, handleLogout } = useContext(UserContext);
@@ -91,6 +91,10 @@ function Header() {
               <NavLink to={'/explore'} className="toggledIcon">
                 <Globe size={iconSize} /> <span className="toggledName">Virals</span>
               </NavLink>
+              <NavLink to={'/payment'} className="toggledIcon">
+                <CreditCard size={iconSize} /> <span className="toggledName">Credit</span>
+              </NavLink>
+              
             </div>
           </div>
           <br></br>

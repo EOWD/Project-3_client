@@ -15,6 +15,9 @@ function Images() {
     const [bigImageName, setBigImageName] = useState(null)
     const [bigImageId, setbigImageId] = useState(null)
     const [bigImageShare, setbigImageShare] = useState(null)
+    const [imagePId, setbigImagePId] = useState(null)
+
+    
     
     const [toggleShareState, setToggleShareState] = useState(null)
 
@@ -26,22 +29,27 @@ function Images() {
 
     useEffect(() => {
         if(selectedImage && selectedImage.imageData){
-            setBigImage(`data:image/jpeg;base64,${selectedImage.imageData}`);
+            setBigImage(selectedImage.url);
             setBigImageName(selectedImage.name)
             setbigImageId(selectedImage._id)
             setbigImageShare(selectedImage.share)
+            setbigImagePId(selectedImage.public_id)
         }
     }, [selectedImage]);
 
     // Function to view single image
     function viewSingleImage(imageData) {
+        console.log(imagePId);
         setBigImage(imageData);
     }
 
-    const handleDownload = (imageName, imageUrl) => {
+    const handleDownload = (imageName, imageUrl,id) => {
+       
+        const downloadUrl = `https://res.cloudinary.com/djbugpgz9/image/upload/fl_attachment/${id}.png`;
+
         const link = document.createElement('a');
-        link.href = imageUrl;
-        link.download = `${imageName}.png`; // or any other extension
+        link.href = downloadUrl;
+      
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -90,8 +98,8 @@ function Images() {
                         <div key={image._id} className="imageContainer">
                             <img
                                 className="image"
-                                onClick={() => {viewSingleImage(`data:image/jpeg;base64,${image.imageData}`); setBigImageName(image.name); setbigImageId(image._id); setbigImageShare(image.share)}}
-                                src={`data:image/jpeg;base64,${image.imageData}`}
+                                onClick={() => {viewSingleImage(image.url); setBigImageName(image.name); setbigImageId(image._id); setbigImageShare(image.share);setbigImagePId(image.public_id)}}
+                                src={image.url}
                                 alt={image.name}
                             />
                         </div>
@@ -105,7 +113,7 @@ function Images() {
                 <div className="actionButtons">
                     <Minimize2 color="gray" className="closeSingleView" onClick={()=>setBigImage(null)} />
                     <div>
-                        <DownloadCloud onClick={() => {handleDownload(bigImageName, bigImage)}} color="gray" />
+                        <DownloadCloud onClick={() => {handleDownload(bigImageName, bigImage,imagePId)}} color="gray" />
                         <Share2 onClick={()=>{handleOpen()}} color="gray" />
                         <Trash2 onClick={()=>{deleteThisImage(bigImageId)}} color="gray" />
                     </div>

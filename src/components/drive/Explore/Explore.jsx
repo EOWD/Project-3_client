@@ -79,12 +79,12 @@ function Explore() {
                 <div key={image._id} className="ExploreImageContainer">
                   <img
                     className="explorerSingleImage"
-                    src={`data:image/jpeg;base64,${image.imageData}`}
+                    src={image.url}
                     alt={image.name}
                   />
                 </div>
                 <div className="aboveImageContent">
-                  <p>{image.userId}</p>
+                  <p>{image.name}</p>
                   <Heart color="gray" />
                 </div>
               </SwiperSlide>
@@ -132,7 +132,7 @@ function Explore() {
                     <img
                       className="popArtistSingleImage"
                       style={{ borderRadius: '50%' }} // Make the image round
-                      src={`data:image/jpeg;base64,${image.imageData}`}
+                      src={image.url?image.url:`data:image/jpeg;base64,${image.imageData}`}
                       alt={image.name}
                     />
                   </div>
