@@ -132,7 +132,7 @@ function Explore() {
                     <img
                       className="popArtistSingleImage"
                       style={{ borderRadius: '50%' }} // Make the image round
-                      src={`data:image/jpeg;base64,${image.imageData}`}
+                      src={image.url?image.url:`data:image/jpeg;base64,${image.imageData}`}
                       alt={image.name}
                     />
                   </div>

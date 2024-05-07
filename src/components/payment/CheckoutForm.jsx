@@ -1,4 +1,4 @@
-// CheckoutForm.js
+
 import React from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import './payment.css';
@@ -10,8 +10,7 @@ export default function CheckoutForm() {
         event.preventDefault();
 
         if (!stripe || !elements) {
-            // Stripe.js has not loaded yet. Make sure to disable
-            // form submission until Stripe.js has loaded.
+           
             return;
         }
 
